@@ -3,8 +3,8 @@ title: Player Stats
 ---
 
 ```sql skater_stats
-SELECT 
-	SUBSTRING(Season::STRING,1,8) as "Season", 
+SELECT
+	Season::INT as "Season",
 	(A1+A2) as "A",
 	((A1+A2)/TOI)*60 as "A/60",
 	"Extraneous Gi" as "ext_gi",
@@ -20,7 +20,7 @@ SELECT
 	*
 FROM skater s
 WHERE
-	Season IN ${inputs.season_options.value}
+	SUBSTRING(Season,1,8) IN ${inputs.season_options.value}
 AND
 	Age >= ${inputs.age_options}
 AND
@@ -33,7 +33,7 @@ AND
 
 ```sql seasons
 SELECT DISTINCT 
-	SUBSTRING(Season::STRING,1,8) as "Season"
+	SUBSTRING("Season",1,8) as "Season"
 FROM skater s
 ```
 
@@ -106,7 +106,7 @@ FROM skater s
 <DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
-    <Column id=Season align=center />
+    <Column id=Season align=center fmt='####-####' />
 	<Column id=Team align=center />
 	<Column id=Position align=center />
     <Column id=Age align=center />
@@ -132,7 +132,7 @@ FROM skater s
 <DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
-    <Column id=Season align=center />
+    <Column id=Season align=center fmt='####-####' />
 	<Column id=Team align=center />
 	<Column id=Position align=center />
     <Column id=Age align=center />
@@ -143,7 +143,7 @@ FROM skater s
     <Column id=GA align=center title="GA"/>
 	<Column id=FF align=center title="FF"/>
     <Column id=FA align=center title="FA"/>
-    <Column id=xGF align=center title="FF"/>
+    <Column id=xGF align=center title="xGF"/>
     <Column id=xGA align=center title="xGA"/>
     <Column id=xGF/FF align=center title="xGF/FF"/>
     <Column id=xGA/FA align=center title="xGA/FA"/>
@@ -156,7 +156,7 @@ FROM skater s
 <DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
-    <Column id=Season align=center />
+    <Column id=Season align=center fmt='####-####' />
 	<Column id=Team align=center />
 	<Column id=Position align=center />
     <Column id=Age align=center />
@@ -191,7 +191,7 @@ FROM skater s
 <DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
-    <Column id=Season align=center />
+    <Column id=Season align=center fmt='####-####' />
 	<Column id=Team align=center />
 	<Column id=Position align=center />
     <Column id=Age align=center />
@@ -217,7 +217,7 @@ FROM skater s
 <DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
-    <Column id=Season align=center />
+    <Column id=Season align=center fmt='####-####' />
 	<Column id=Team align=center />
 	<Column id=Position align=center />
     <Column id=Age align=center />
@@ -241,7 +241,7 @@ FROM skater s
 <DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
-    <Column id=Season align=center />
+    <Column id=Season align=center fmt='####-####' />
 	<Column id=Team align=center />
 	<Column id=Position align=center />
     <Column id=Age align=center />

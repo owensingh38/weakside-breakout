@@ -52,9 +52,9 @@ FROM team s
 
 <DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
     <Column id=Team align=center />
-    <Column id=Season align=center />	
+    <Column id=Season align=center fmt='####-####' />
 	<Column id=GP align=center title="GP"/>
-    <Column id=TOI align=center title="TOI"/>
+    <Column id=TOI align=center title="TOI" fmt='#,###.#0' />
 	<Column id=GF align=center title="GF"/>
     <Column id=GA align=center title="GA"/>
 	<Column id=FF align=center title="FF"/>
@@ -67,15 +67,18 @@ FROM team s
     <Column id=GA/xGA align=center title="GA/xGA"/>
     <Column id=Give align=center />
     <Column id=Take align=center />	
+    <Column id=GF% align=center title="GF%" fmt='##.00%' />
+	<Column id=FF% align=center title="FF%" fmt='##.00%' />
+    <Column id=xGF% align=center title="xGF%" fmt='##.00%' />
 </DataTable>
 
 {:else }
 
 <DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
     <Column id=Team align=center />
-    <Column id=Season align=center />	
+    <Column id=Season align=center fmt='####-####' />
 	<Column id=GP align=center title="GP"/>
-    <Column id=TOI align=center title="TOI"/>
+    <Column id=TOI align=center title="TOI" fmt='#,###.#0' />
 	<Column id=GF/60 align=center title="GF/60"/>
     <Column id=GA/60 align=center title="GA/60"/>
 	<Column id=FF/60 align=center title="FF/60"/>
@@ -88,6 +91,9 @@ FROM team s
     <Column id=GA/xGA align=center title="GA/xGA"/>
     <Column id=Give/60 align=center />
     <Column id=Take/60 align=center />	
+    <Column id=GF% align=center title="GF%" fmt='##.00%' />
+	<Column id=FF% align=center title="FF%" fmt='##.00%' />
+    <Column id=xGF% align=center title="xGF%" fmt='##.00%' />
 </DataTable>
 
 {/if}
