@@ -22,16 +22,6 @@ SELECT
    Season::INT as "Season",
    (A1+A2) as "A",
    ((A1+A2)/TOI)*60 as "A/60",
-   "Extraneous Gi" as "ext_gi",
-   "Extraneous GF" as "ext_gf",
-   "Extraneous GA" as "ext_ga",
-   "Extraneous xGi" as "ext_xgi",
-   "Extraneous xGF" as "ext_xgf",
-   "Extraneous xGA" as "ext_xga",
-   "Linemate Extraneous Goals" as "line-ex_g",
-   "Linemate Goal Induction" as "line-in",
-   "Composite Goal Impact" as "comp_goal",
-   "Linemate Rel. Goal Impact" as "line-rel",
    '/players/' || ID as playerLink,
    *
 FROM skater
@@ -71,7 +61,7 @@ AND
    Team = '${inputs.shot_team.value}'
 UNION ALL
 SELECT
-    'Goal Induction' as metric, ("Linemate Goal Induction Percentile"*100) as value
+    'Goal Induction' as metric, ("LiGIn-P"*100) as value
 FROM skater
 WHERE
    ID = '${params.ID}' 
@@ -124,9 +114,11 @@ AND
    <Column id=Penl align=center />
    <Column id=Draw align=center />  
    <Column id=PIM align=center title="PIM"/>
+   <Column id=Block align=center title="Blocks"/>
 </DataTable>
 
 <h1>Shot Profile and Offensive Contribution</h1>
+<h3 style="font-size:70%;">Percentiles at 5v5 and relative to player position</h3>
 <Dropdown
     data={seasons}
     name=shot_season

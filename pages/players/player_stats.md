@@ -7,16 +7,6 @@ SELECT
 	Season::INT as "Season",
 	(A1+A2) as "A",
 	((A1+A2)/TOI)*60 as "A/60",
-	"Extraneous Gi" as "ext_gi",
-	"Extraneous GF" as "ext_gf",
-	"Extraneous GA" as "ext_ga",
-	"Extraneous xGi" as "ext_xgi",
-	"Extraneous xGF" as "ext_xgf",
-	"Extraneous xGA" as "ext_xga",
-	"Linemate Extraneous Goals" as "line-ex_g",
-	"Linemate Goal Induction" as "line-in",
-	"Composite Goal Impact" as "comp_goal",
-	"Linemate Rel. Goal Impact" as "line-rel",
 	'/players/' || ID as playerLink,
 	*
 FROM skater s
@@ -128,6 +118,7 @@ FROM skater s
 	<Column id=Penl align=center />
     <Column id=Draw align=center />	
 	<Column id=PIM align=center title="PIM"/>	
+	<Column id=Block align=center title="Blocks"/>
 </DataTable>
 {:else if inputs.type.value == 2}
 <DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
@@ -164,25 +155,25 @@ FROM skater s
 	<Column id=Nationality align=center />
 	<Column id=GP align=center title="GP"/>
     <Column id=TOI align=center title="TOI" fmt='#,###.#0' />
-	<Column id=INDV-SRI align=center title="Shot Rate Impact" fmt='#0.####' />
-    <Column id=INDV-SQI align=center title="Shot Quality Impact" fmt='#0.####' />
-	<Column id=INDV-FN align=center title="Finishing Impact" fmt='#0.####' />
-    <Column id=OOFF-SRI align=center title="On-Ice Shot Rate Impact For" fmt='#0.####' />
-    <Column id=OOFF-SQI align=center title="On-Ice Shot Quality Impact For" fmt='#0.####' />
-	<Column id=OOFF-FN align=center title="On-Ice Finishing Impact For" fmt='#0.####' />
-	<Column id=ODEF-SRI align=center title="On-Ice Shot Rate Impact Against" fmt='#0.####' />
-    <Column id=ODEF-SQI align=center title="On-Ice Shot Quality Impact Against" fmt='#0.####' />
-	<Column id=ODEF-FN align=center title="On-Ice Finishing Impact Against" fmt='#0.####' />
-	<Column id=ext_gi align=center title="Extraneous G" fmt='#0.####' />
-    <Column id=ext_gf align=center title="Extraneous GF" fmt='#0.####' />
-	<Column id=ext_ga align=center title="Extraneous GA" fmt='#0.####' />
-	<Column id=ext_xgi align=center title="Extraneous ixG" fmt='#0.####' />
-    <Column id=ext_xgf align=center title="Extraneous xGF" fmt='#0.####' />
-	<Column id=ext_xga align=center title="Extraneous xGA" fmt='#0.####' />
-	<Column id=line-ex_g align=center title="Linemate Extraneous GF" fmt='#0.####' />
-	<Column id=line-in align=center title="Goal Induction" fmt='#0.####' />
-    <Column id=comp_goal align=center title="Composite Goal Impact" fmt='#0.####' />
-	<Column id=line-rel align=center title="Linemate Rel. Goal Impact" fmt='#0.####' />
+	<Column id=INDV-SRI-T align=center title="Shot Rate Impact" fmt='#0.####' />
+    <Column id=INDV-SQI-T align=center title="Shot Quality Impact" fmt='#0.####' />
+	<Column id=INDV-FNI-T align=center title="Finishing Impact" fmt='#0.####' />
+    <Column id=OOFF-SRI-T align=center title="On-Ice Shot Rate Impact For" fmt='#0.####' />
+    <Column id=OOFF-SQI-T align=center title="On-Ice Shot Quality Impact For" fmt='#0.####' />
+	<Column id=OOFF-FNI-T align=center title="On-Ice Finishing Impact For" fmt='#0.####' />
+	<Column id=ODEF-SRI-T align=center title="On-Ice Shot Rate Impact Against" fmt='#0.####' />
+    <Column id=ODEF-SQI-T align=center title="On-Ice Shot Quality Impact Against" fmt='#0.####' />
+	<Column id=ODEF-FNI-T align=center title="On-Ice Finishing Impact Against" fmt='#0.####' />
+	<Column id=EGi-T align=center title="Extraneous G" fmt='#0.####' />
+    <Column id=EGF-T align=center title="Extraneous GF" fmt='#0.####' />
+	<Column id=EGA-T align=center title="Extraneous GA" fmt='#0.####' />
+	<Column id=ExGi-T align=center title="Extraneous ixG" fmt='#0.####' />
+    <Column id=ExGF-T align=center title="Extraneous xGF" fmt='#0.####' />
+	<Column id=ExGA-T align=center title="Extraneous xGA" fmt='#0.####' />
+	<Column id=LiEG-T align=center title="Linemate Extraneous GF" fmt='#0.####' />
+	<Column id=LiGIn-T align=center title="Goal Induction" fmt='#0.####' />
+    <Column id=CompGI-T align=center title="Composite Goal Impact" fmt='#0.####' />
+	<Column id=LiRelGI-T align=center title="Linemate Rel. Goal Impact" fmt='#0.####' />
 </DataTable>
 {/if}
 
@@ -212,7 +203,8 @@ FROM skater s
     <Column id=Take/60 align=center />	
 	<Column id=Penl/60 align=center />
     <Column id=Draw/60 align=center />	
-	<Column id=PIM align=center title="PIM"/>	
+	<Column id=PIM align=center title="PIM"/>
+	<Column id=Block/60 align=center title="Blocks/60"/>	
 </DataTable>
 {:else if inputs.type.value == 2}
 <DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
@@ -251,23 +243,23 @@ FROM skater s
     <Column id=TOI align=center title="TOI" fmt='#,###.#0' />
 	<Column id=INDV-SRI align=center title="Shot Rate Impact" fmt='#0.####' />
     <Column id=INDV-SQI align=center title="Shot Quality Impact" fmt='#0.####' />
-	<Column id=INDV-FN align=center title="Finishing Impact" fmt='#0.####' />
+	<Column id=INDV-FNI align=center title="Finishing Impact" fmt='#0.####' />
     <Column id=OOFF-SRI align=center title="On-Ice Shot Rate Impact For" fmt='#0.####' />
     <Column id=OOFF-SQI align=center title="On-Ice Shot Quality Impact For" fmt='#0.####' />
-	<Column id=OOFF-FN align=center title="On-Ice Finishing Impact For" fmt='#0.####' />
+	<Column id=OOFF-FNI align=center title="On-Ice Finishing Impact For" fmt='#0.####' />
 	<Column id=ODEF-SRI align=center title="On-Ice Shot Rate Impact Against" fmt='#0.####' />
     <Column id=ODEF-SQI align=center title="On-Ice Shot Quality Impact Against" fmt='#0.####' />
-	<Column id=ODEF-FN align=center title="On-Ice Finishing Impact Against" fmt='#0.####' />
-	<Column id=ext_gi align=center title="Extraneous G" fmt='#0.####' />
-    <Column id=ext_gf align=center title="Extraneous GF" fmt='#0.####' />
-	<Column id=ext_ga align=center title="Extraneous GA" fmt='#0.####' />
-	<Column id=ext_xgi align=center title="Extraneous ixG" fmt='#0.####' />
-    <Column id=ext_xgf align=center title="Extraneous xGF" fmt='#0.####' />
-	<Column id=ext_xga align=center title="Extraneous xGA" fmt='#0.####' />
-	<Column id=line-ex_g align=center title="Linemate Extraneous GF" fmt='#0.####' />
-	<Column id=line-in align=center title="Goal Induction" fmt='#0.####' />
-    <Column id=comp_goal align=center title="Composite Goal Impact" fmt='#0.####' />
-	<Column id=line-rel align=center title="Linemate Rel. Goal Impact" fmt='#0.####' />
+	<Column id=ODEF-FNI align=center title="On-Ice Finishing Impact Against" fmt='#0.####' />
+	<Column id=EGi align=center title="Extraneous G" fmt='#0.####' />
+    <Column id=EGF align=center title="Extraneous GF" fmt='#0.####' />
+	<Column id=EGA align=center title="Extraneous GA" fmt='#0.####' />
+	<Column id=ExGi align=center title="Extraneous ixG" fmt='#0.####' />
+    <Column id=ExGF align=center title="Extraneous xGF" fmt='#0.####' />
+	<Column id=ExGA align=center title="Extraneous xGA" fmt='#0.####' />
+	<Column id=LiEG align=center title="Linemate Extraneous GF" fmt='#0.####' />
+	<Column id=LiGIn align=center title="Goal Induction" fmt='#0.####' />
+    <Column id=CompGI align=center title="Composite Goal Impact" fmt='#0.####' />
+	<Column id=LiRelGI align=center title="Linemate Rel. Goal Impact" fmt='#0.####' />
 </DataTable>
 {/if}
 

@@ -4,8 +4,7 @@ title: Team Stats
 
 ```sql team_stats
 SELECT 
-	SUBSTRING(Season::STRING,1,8) as "Season", 
-    '/teams/' || Team as playerLink,
+	"Season"::INT, 
 	*
 FROM team s
 WHERE
@@ -49,8 +48,14 @@ FROM team s
 	<DropdownOption valueLabel="Rates" value=2 />
 </Dropdown>
 
+<Dropdown name=type title=Type defaultValue=1>
+	<DropdownOption valueLabel="On-Ice" value=1 />
+	<DropdownOption valueLabel="Goal Impact" value=2 />
+</Dropdown>
+
 {#if inputs.display.value == 1}
 
+{#if inputs.type.value == 1}
 <DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
     <Column id=Team align=center />
     <Column id=Season align=center fmt='####-####' />
@@ -72,9 +77,27 @@ FROM team s
 	<Column id=FF% align=center title="FF%" fmt='##.00%' />
     <Column id=xGF% align=center title="xGF%" fmt='##.00%' />
 </DataTable>
+{:else }
+<DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
+    <Column id=Team align=center />
+    <Column id=Season align=center fmt='####-####' />
+	<Column id=GP align=center title="GP"/>
+    <Column id=TOI align=center title="TOI" fmt='#,###.#0' />
+    <Column id=OOFF-SRI-T align=center title="On-Ice Shot Rate Impact For" fmt='#0.####' />
+    <Column id=OOFF-SQI-T align=center title="On-Ice Shot Quality Impact For" fmt='#0.####' />
+	<Column id=OOFF-FNI-T align=center title="On-Ice Finishing Impact For" fmt='#0.####' />
+	<Column id=ODEF-SRI-T align=center title="On-Ice Shot Rate Impact Against" fmt='#0.####' />
+    <Column id=ODEF-SQI-T align=center title="On-Ice Shot Quality Impact Against" fmt='#0.####' />
+	<Column id=ODEF-FNI-T align=center title="On-Ice Finishing Impact Against" fmt='#0.####' />
+    <Column id=EGF-T align=center title="Extraneous GF" fmt='#0.####' />
+	<Column id=EGA-T align=center title="Extraneous GA" fmt='#0.####' />
+    <Column id=ExGF-T align=center title="Extraneous xGF" fmt='#0.####' />
+	<Column id=ExGA-T align=center title="Extraneous xGA" fmt='#0.####' />
+</DataTable>
+{/if}
 
 {:else }
-
+{#if inputs.type.value == 1}
 <DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
     <Column id=Team align=center />
     <Column id=Season align=center fmt='####-####' />
@@ -96,5 +119,22 @@ FROM team s
 	<Column id=FF% align=center title="FF%" fmt='##.00%' />
     <Column id=xGF% align=center title="xGF%" fmt='##.00%' />
 </DataTable>
-
+{:else }
+<DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
+    <Column id=Team align=center />
+    <Column id=Season align=center fmt='####-####' />
+	<Column id=GP align=center title="GP"/>
+    <Column id=TOI align=center title="TOI" fmt='#,###.#0' />
+    <Column id=OOFF-SRI align=center title="On-Ice Shot Rate Impact For" fmt='#0.####' />
+    <Column id=OOFF-SQI align=center title="On-Ice Shot Quality Impact For" fmt='#0.####' />
+	<Column id=OOFF-FNI align=center title="On-Ice Finishing Impact For" fmt='#0.####' />
+	<Column id=ODEF-SRI align=center title="On-Ice Shot Rate Impact Against" fmt='#0.####' />
+    <Column id=ODEF-SQI align=center title="On-Ice Shot Quality Impact Against" fmt='#0.####' />
+	<Column id=ODEF-FNI align=center title="On-Ice Finishing Impact Against" fmt='#0.####' />
+    <Column id=EGF align=center title="Extraneous GF" fmt='#0.####' />
+	<Column id=EGA align=center title="Extraneous GA" fmt='#0.####' />
+    <Column id=ExGF align=center title="Extraneous xGF" fmt='#0.####' />
+	<Column id=ExGA align=center title="Extraneous xGA" fmt='#0.####' />
+</DataTable>
+{/if}
 {/if}
