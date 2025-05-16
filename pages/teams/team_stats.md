@@ -5,6 +5,7 @@ title: Team Stats
 ```sql team_stats
 SELECT 
 	SUBSTRING(Season::STRING,1,8) as "Season", 
+    '/teams/' || Team as playerLink,
 	*
 FROM team s
 WHERE

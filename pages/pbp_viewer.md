@@ -7,22 +7,25 @@ SELECT
     event_num,
     "period",
     seconds_elapsed,
-    speed_from_last,
-    strength_state,
     event_type,
     "description",
+    strength_state,
     team,
     skater,
     skater_2,
     skater_3,
     shot_type,
     zone_code,
-    x,
-    y,
+    x_adj as x,
+    y_adj as y,
     away_score,
     home_score,
     away_on_1,away_on_2,away_on_3,away_on_4,away_on_5,away_goalie,away_coach,
     home_on_1,home_on_2,home_on_3,home_on_4,home_on_5,home_goalie,home_coach,
+    event_type_last,
+    event_team_last,
+    zone_code_last,
+    seconds_since_last,
     offwing,
     xG,
     CASE
@@ -109,6 +112,7 @@ GROUP BY team
     name=date
     data={dates}
     dates=game_date
+    defaultValue="2025-05-01"
 />
 
 <Dropdown
@@ -305,6 +309,8 @@ GROUP BY team
                 hideValue=true
                 lineWidth=3 lineType=solid/
             />
+            <ReferenceArea xMin=-89 xMax=-83 areaColor=blue yMin=-3 yMax=3/>
+            <ReferenceArea xMin=83 xMax=89 areaColor=blue yMin=-3 yMax=3/>
             <ReferencePoint
                 x=0
                 y=0

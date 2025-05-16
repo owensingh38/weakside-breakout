@@ -17,6 +17,7 @@ SELECT
 	"Linemate Goal Induction" as "line-in",
 	"Composite Goal Impact" as "comp_goal",
 	"Linemate Rel. Goal Impact" as "line-rel",
+	'/players/' || ID as playerLink,
 	*
 FROM skater s
 WHERE
