@@ -45,15 +45,6 @@ AND
     team IS NOT NULL
 ```
 
-```sql gamecenter
-SELECT
-    p.game_id,
-    s.id as game_id,
-    s.gamecenter_link
-FROM pbp p, schedule s
-NATURAL JOIN schedule
-```
-
 ```sql dates
 SELECT DISTINCT 
 	game_date
