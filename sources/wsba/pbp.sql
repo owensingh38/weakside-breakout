@@ -31,7 +31,17 @@ SELECT
     offwing,
     xG
 
-FROM read_parquet(
-    "C:\Users\owenb\OneDrive\Desktop\Owen\Python Projects\Hockey Analytics\WSBA\wsba_hockey\release\wsba_hockey\src\wsba_hockey\pbp\parquet\*.parquet"
-    );
-    
+FROM read_parquet([
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20132014.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20142015.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20152016.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20162017.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20172018.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20182019.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20192020.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20202021.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20212022.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20222023.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20232024.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20242025.parquet"
+    ])
