@@ -4,6 +4,7 @@ title: WeakSide Breakout Analysis
 
 <div style="text-align: center;">
     <span style="display: inline-flex; align-items: center;">
+        <img src="/wsba.png" alt="WSBA" style="width:200px;height:200px;">
         <b><i>Evaluating, analyzing, and understanding the game of hockey through the lens of different analytical methods, including incorporation of analytics.</i></b>
     </span>
 </div>
