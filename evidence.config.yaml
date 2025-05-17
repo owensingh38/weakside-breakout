@@ -79,6 +79,3 @@ plugins:
     "@evidence-dev/sqlite": { }
     "@evidence-dev/trino": { }
     "@evidence-dev/motherduck": { }
-
-deployment:
-  basePath: /weakside-breakout

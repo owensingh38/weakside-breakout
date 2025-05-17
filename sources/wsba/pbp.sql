@@ -32,6 +32,9 @@ SELECT
     xG
 
 FROM read_parquet([
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20102011.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20112012.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20122013.parquet",
     "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20132014.parquet",
     "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20142015.parquet",
     "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20152016.parquet",

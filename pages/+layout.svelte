@@ -7,7 +7,6 @@
 </script>
 
 <EvidenceDefaultLayout {data} 
-	logo="{base}/wsba.png"
 	neverShowQueries=true 
 	githubRepo=https://github.com/owensingh38/wsba_hockey 
 	fullWidth=true
