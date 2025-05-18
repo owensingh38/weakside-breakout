@@ -8,8 +8,11 @@ SELECT
 	(A1+A2) as "A",
 	((A1+A2)/TOI)*60 as "A/60",
 	'/players/' || ID as playerLink,
+	info.triCode,
 	*
-FROM skater s
+FROM skater
+RIGHT JOIN info
+   ON info.triCode=skater.Team AND info.seasonId=skater.Season
 WHERE
 	SUBSTRING(Season,1,8) IN ${inputs.season_options.value}
 AND
@@ -25,19 +28,19 @@ AND
 ```sql seasons
 SELECT DISTINCT 
 	SUBSTRING("Season",1,8) as "Season"
-FROM skater s
+FROM skater
 ```
 
 ```sql strengths
 SELECT DISTINCT 
 	Strength
-FROM skater s
+FROM skater
 ```
 
 ```sql positions
 SELECT DISTINCT 
 	Position
-FROM skater s
+FROM skater
 ```
 
 <Dropdown
@@ -94,10 +97,12 @@ FROM skater s
 {#if inputs.display.value == 1}
 
 {#if inputs.type.value == 1}
-<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
+<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
+	<Column id=Headshot align=center contentType="image" height=30px/>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
     <Column id=Season align=center fmt='####-####' />
+	<Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
 	<Column id=Team align=center />
 	<Column id=Position align=center />
     <Column id=Age align=center />
@@ -121,10 +126,11 @@ FROM skater s
 	<Column id=Block align=center title="Blocks"/>
 </DataTable>
 {:else if inputs.type.value == 2}
-<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
+<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
     <Column id=Season align=center fmt='####-####' />
+	<Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
 	<Column id=Team align=center />
 	<Column id=Position align=center />
     <Column id=Age align=center />
@@ -145,10 +151,11 @@ FROM skater s
     <Column id=xGF% align=center title="xGF%" fmt='##.00%' />
 </DataTable>
 {:else }
-<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
+<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
     <Column id=Season align=center fmt='####-####' />
+	<Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
 	<Column id=Team align=center />
 	<Column id=Position align=center />
     <Column id=Age align=center />
@@ -180,10 +187,11 @@ FROM skater s
 
 {:else }
 {#if inputs.type.value == 1}
-<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
+<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
     <Column id=Season align=center fmt='####-####' />
+	<Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
 	<Column id=Team align=center />
 	<Column id=Position align=center />
     <Column id=Age align=center />
@@ -207,10 +215,11 @@ FROM skater s
 	<Column id=Block/60 align=center title="Blocks/60"/>	
 </DataTable>
 {:else if inputs.type.value == 2}
-<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
+<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
     <Column id=Season align=center fmt='####-####' />
+	<Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
 	<Column id=Team align=center />
 	<Column id=Position align=center />
     <Column id=Age align=center />
@@ -231,10 +240,11 @@ FROM skater s
     <Column id=xGF% align=center title="xGF%" fmt='##.00%' />
 </DataTable>
 {:else }
-<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
+<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
     <Column id=Season align=center fmt='####-####' />
+	<Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
 	<Column id=Team align=center />
 	<Column id=Position align=center />
     <Column id=Age align=center />

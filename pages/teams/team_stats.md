@@ -4,9 +4,12 @@ title: Team Stats
 
 ```sql team_stats
 SELECT 
-	"Season"::INT, 
+	"Season"::INT,
+    info.teamLogo,
 	*
-FROM team s
+FROM team
+RIGHT JOIN info
+   ON info.triCode=team.Team AND info.seasonId=team.Season
 WHERE
 	Season IN ${inputs.season_options.value}
 AND
@@ -16,13 +19,13 @@ AND
 ```sql seasons
 SELECT DISTINCT 
 	SUBSTRING(Season::STRING,1,8) as "Season"
-FROM team s
+FROM team
 ```
 
 ```sql strengths
 SELECT DISTINCT 
 	Strength
-FROM team s
+FROM team
 ```
 
 <Dropdown
@@ -56,7 +59,8 @@ FROM team s
 {#if inputs.display.value == 1}
 
 {#if inputs.type.value == 1}
-<DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
+<DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white downloadable=false>
+    <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
     <Column id=Team align=center />
     <Column id=Season align=center fmt='####-####' />
 	<Column id=GP align=center title="GP"/>
@@ -78,7 +82,8 @@ FROM team s
     <Column id=xGF% align=center title="xGF%" fmt='##.00%' />
 </DataTable>
 {:else }
-<DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
+<DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white downloadable=false>
+    <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
     <Column id=Team align=center />
     <Column id=Season align=center fmt='####-####' />
 	<Column id=GP align=center title="GP"/>
@@ -98,7 +103,8 @@ FROM team s
 
 {:else }
 {#if inputs.type.value == 1}
-<DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
+<DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white downloadable=false>
+    <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
     <Column id=Team align=center />
     <Column id=Season align=center fmt='####-####' />
 	<Column id=GP align=center title="GP"/>
@@ -120,7 +126,8 @@ FROM team s
     <Column id=xGF% align=center title="xGF%" fmt='##.00%' />
 </DataTable>
 {:else }
-<DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink>
+<DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white downloadable=false>
+    <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
     <Column id=Team align=center />
     <Column id=Season align=center fmt='####-####' />
 	<Column id=GP align=center title="GP"/>

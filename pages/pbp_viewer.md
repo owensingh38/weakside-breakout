@@ -188,6 +188,7 @@ GROUP BY team
                 color=red
                 hideValue=true
                 lineWidth=3 lineType=solid/
+                opacity=0.25
             />
             <ReferenceLine
                 x=24
@@ -309,70 +310,70 @@ GROUP BY team
                 hideValue=true
                 lineWidth=3 lineType=solid/
             />
-            <ReferenceArea xMin=-89 xMax=-83 areaColor=blue yMin=-3 yMax=3/>
-            <ReferenceArea xMin=83 xMax=89 areaColor=blue yMin=-3 yMax=3/>
+            <ReferenceArea xMin=-89 xMax=-83 areaColor=blue yMin=-3 yMax=3 opacity=0.25/>
+            <ReferenceArea xMin=83 xMax=89 areaColor=blue yMin=-3 yMax=3 opacity=0.25/>
             <ReferencePoint
                 x=0
                 y=0
                 color=red
                 symbolSize=40
-                symbolOpacity=1
+                symbolOpacity=0.25
             />
             <ReferencePoint
                 x=-18
                 y=22.5
                 color=red
                 symbolSize=15
-                symbolOpacity=1
+                symbolOpacity=0.25
             />
             <ReferencePoint
                 x=-18
                 y=-22.5
                 color=red
                 symbolSize=15
-                symbolOpacity=1
+                symbolOpacity=0.25
             />
             <ReferencePoint
                 x=18
                 y=22.5
                 color=red
                 symbolSize=15
-                symbolOpacity=1
+                symbolOpacity=0.25
             />
             <ReferencePoint
                 x=18
                 y=-22.5
                 color=red
                 symbolSize=15
-                symbolOpacity=1
+                symbolOpacity=0.25
             />
             <ReferencePoint
                 x=-70
                 y=22.5
                 color=red
                 symbolSize=40
-                symbolOpacity=1
+                symbolOpacity=0.25
             />
             <ReferencePoint
                 x=-70
                 y=-22.5
                 color=red
                 symbolSize=40
-                symbolOpacity=1
+                symbolOpacity=0.25
             />
             <ReferencePoint
                 x=70
                 y=22.5
                 color=red
                 symbolSize=40
-                symbolOpacity=1
+                symbolOpacity=0.25
             />
             <ReferencePoint
                 x=70
                 y=-22.5
                 color=red
                 symbolSize=40
-                symbolOpacity=1
+                symbolOpacity=0.25
             />
         </BubbleChart>
     </div>
