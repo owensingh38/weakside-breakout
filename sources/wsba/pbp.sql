@@ -5,9 +5,6 @@ SELECT
     event_num,
     "period",
     seconds_elapsed,
-    event_type_last,
-    event_team_last,
-    zone_code_last,
     seconds_since_last,
     strength_state,
     event_type,
@@ -26,8 +23,8 @@ SELECT
     y_adj,
     away_score,
     home_score,
-    away_on_1,away_on_2,away_on_3,away_on_4,away_on_5,away_goalie,away_coach,
-    home_on_1,home_on_2,home_on_3,home_on_4,home_on_5,home_goalie,home_coach,
+    away_on_1,away_on_2,away_on_3,away_on_4,away_on_5,away_on_6,away_goalie,away_coach,
+    home_on_1,home_on_2,home_on_3,home_on_4,home_on_5,home_on_6,home_goalie,home_coach,
     offwing,
     xG
 

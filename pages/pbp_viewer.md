@@ -8,7 +8,10 @@ SELECT
     "period",
     seconds_elapsed,
     event_type,
-    "description",
+    CASE
+        WHEN event_type IN ('missed-shot','shot-on-goal','goal') THEN "description" || ' - xG: ' || SUBSTRING(("xG"*100),1,5) || '%'
+        ELSE "description"
+    END as "description",
     strength_state,
     team,
     skater,
@@ -20,11 +23,8 @@ SELECT
     y_adj as y,
     away_score,
     home_score,
-    away_on_1,away_on_2,away_on_3,away_on_4,away_on_5,away_goalie,away_coach,
-    home_on_1,home_on_2,home_on_3,home_on_4,home_on_5,home_goalie,home_coach,
-    event_type_last,
-    event_team_last,
-    zone_code_last,
+    away_on_1,away_on_2,away_on_3,away_on_4,away_on_5,away_on_6,away_goalie,away_coach,
+    home_on_1,home_on_2,home_on_3,home_on_4,home_on_5,home_on_6,home_goalie,home_coach,
     seconds_since_last,
     offwing,
     xG,
@@ -379,5 +379,50 @@ GROUP BY team
     </div>
 </div>
 <br><br>
-<DataTable data={team_summary}/>
-<DataTable data={plays}/>
+<DataTable data={team_summary}>
+    <Column id=Team align=center />
+    <Column id=Goals align=center/>
+    <Column id=Shots align=center/>
+	<Column id=Fenwick align=center/>
+    <Column id=xG align=center title="xG"/>
+    <Column id=Giveaways align=center/>
+    <Column id=Takeaways align=center/>
+    <Column id=Hits align=center/>
+</DataTable>
+
+<DataTable data={plays}>
+    <Column id=event_num align=center title="#"/>
+    <Column id=period align=center/>
+    <Column id=seconds_elapsed align=center title="Seconds"/>
+	<Column id=event_type align=center title="Event"/>
+    <Column id=description align=center/>
+    <Column id=strength_state align=center title="Strength"/>
+    <Column id=team align=center/>
+    <Column id=skater align=center/>
+    <Column id=skater_2 align=center/>
+    <Column id=skater_3 align=center/>
+    <Column id=shot_type align=center/>
+    <Column id=zone_code align=center/>
+    <Column id=x align=center title="x"/>
+	<Column id=y align=center title="y"/>
+    <Column id=away_score align=center/>
+	<Column id=home_score align=center/>
+    <Column id=away_on_1 align=center/>
+    <Column id=away_on_2 align=center/>
+    <Column id=away_on_3 align=center/>
+    <Column id=away_on_4 align=center/>
+    <Column id=away_on_5 align=center/>
+    <Column id=away_on_6 align=center/>
+    <Column id=away_goalie align=center/>
+    <Column id=away_coach align=center/>
+    <Column id=home_on_1 align=center/>
+    <Column id=home_on_2 align=center/>
+    <Column id=home_on_3 align=center/>
+    <Column id=home_on_4 align=center/>
+    <Column id=home_on_5 align=center/>
+    <Column id=home_on_6 align=center/>
+    <Column id=home_goalie align=center/>
+    <Column id=home_coach align=center/>
+    <Column id=offwing align=center/>
+    <Column id=xG align=center title="xG"/>
+</DataTable>
