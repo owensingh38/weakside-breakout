@@ -233,7 +233,7 @@ SELECT
       WHEN xG <.1 THEN 0.25
       ELSE (xG*3)
    END as size
-FROM sample_pbp
+FROM pbp
 WHERE
    skater_id = '${params.ID}'
 AND

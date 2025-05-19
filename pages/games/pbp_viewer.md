@@ -38,11 +38,11 @@ SELECT
     info.teamLogo as logo,
     names.Player as "name",
 FROM 
-    sample_pbp
+    pbp
 LEFT JOIN info
-    ON sample_pbp.team=info.triCode AND sample_pbp.season=info.seasonId
+    ON pbp.team=info.triCode AND pbp.season=info.seasonId
 LEFT JOIN names
-    ON sample_pbp.skater_id=names.ID
+    ON pbp.skater_id=names.ID
 WHERE
     game_title = '${inputs.game_options.value}'
 AND
@@ -56,7 +56,7 @@ AND
 ```sql link
 SELECT DISTINCT
     '/games/' || game_id as link
-FROM sample_pbp
+FROM pbp
 WHERE
     game_title = '${inputs.game_options.value}'
 ```
@@ -64,13 +64,13 @@ WHERE
 ```sql dates
 SELECT DISTINCT 
 	game_date
-FROM sample_pbp
+FROM pbp
 ```
 
 ```sql games
 SELECT DISTINCT 
 	game_title
-FROM sample_pbp
+FROM pbp
 WHERE
     game_date = '${inputs.date.value}'
 ```
@@ -78,7 +78,7 @@ WHERE
 ```sql events
 SELECT DISTINCT 
 	event_type
-FROM sample_pbp
+FROM pbp
 WHERE
     event_type NOT IN ('change','challenge','EGPID','delayed-penalty','shootout-complete')
 AND
@@ -88,7 +88,7 @@ AND
 ```sql strengths
 SELECT DISTINCT 
 	strength_state
-FROM sample_pbp
+FROM pbp
 WHERE strength_state IN (
     '0v1',
     '1v0',
