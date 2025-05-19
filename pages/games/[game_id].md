@@ -72,7 +72,7 @@ SELECT
         WHEN xG <.1 THEN 0.25
         ELSE (xG*3)
     END as size
-FROM 
+FROM
     sample_pbp
 WHERE
     game_id = '${params.game_id}'
@@ -107,8 +107,8 @@ AND
 ```
 
 ```sql strengths
-SELECT DISTINCT 
-	CASE WHEN
+SELECT DISTINCT
+    CASE WHEN
         strength_state NOT IN ('5v5','5v4','4v5') THEN 'Other'
         ELSE strength_state
     END as strength_state
@@ -118,7 +118,7 @@ FROM sample_pbp
 ```sql team_summary
 SELECT
     '/games/' || game_id as gameLink,
-    team as Team, 
+    team as Team,
     venue,
     SUM(CASE WHEN event_type IN ('goal') THEN 1 ELSE 0 END) as Goals,
     SUM(CASE WHEN event_type IN ('shot-on-goal','goal') THEN 1 ELSE 0 END) as Shots,
@@ -213,7 +213,7 @@ GROUP BY
 ```
 
 ```sql indv
-SELECT 
+SELECT
     b.Player,
     b.Position,
     b.playerLink,
@@ -238,14 +238,14 @@ LEFT JOIN ${score} as s
 
 <div style="display:flex; justify-content: space-between;">
 <h1>   </h1>
-<Image 
+<Image
     url={logos[0].Logo}
     height=80
 />
 <h1 style="font-size:60px;">{score[0].goals}</h1>
 <h1 style="font-size:60px;">-</h1>
 <h1 style="font-size:60px;">{score[1].goals}</h1>
-<Image 
+<Image
     url={logos[1].Logo}
     height=80
 />
@@ -256,7 +256,7 @@ LEFT JOIN ${score} as s
 <DataTable data={team_summary} rows=50 rowShading=true headerColor=#0000ff headerFontColor=white sort=venue downloadable=false>
     <Column id=Team align=center />
     <Column id=Shots align=center/>
-	<Column id=Fenwick align=center/>
+    <Column id=Fenwick align=center/>
     <Column id=xG align=center title="xG"/>
     <Column id=Giveaways align=center/>
     <Column id=Takeaways align=center/>
@@ -279,7 +279,7 @@ LEFT JOIN ${score} as s
     data={strengths}
     name=strength_options
     value=strength_state
-	title=Strength
+    title=Strength
     multiple=true
     selectAllByDefault=true
 />
