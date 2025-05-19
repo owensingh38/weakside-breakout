@@ -1,9 +1,11 @@
 ---
-title: PBP Viewer
+title: Play-by-Play
 ---
 
 ```sql plays
 SELECT 
+    season,
+    game_id,
     event_num,
     "period",
     seconds_elapsed,
@@ -12,29 +14,35 @@ SELECT
         WHEN event_type IN ('missed-shot','shot-on-goal','goal') THEN "description" || ' - xG: ' || SUBSTRING(("xG"*100),1,5) || '%'
         ELSE "description"
     END as "description",
+    '/players/' || skater_id as playerLink,
     strength_state,
     team,
-    skater,
-    skater_2,
-    skater_3,
+    skater_id,
+    skater_id_2,
+    skater_id_3,
     shot_type,
     zone_code,
     x_adj as x,
     y_adj as y,
     away_score,
     home_score,
-    away_on_1,away_on_2,away_on_3,away_on_4,away_on_5,away_on_6,away_goalie,away_coach,
-    home_on_1,home_on_2,home_on_3,home_on_4,home_on_5,home_on_6,home_goalie,home_coach,
+    away_on_1_id,away_on_2_id,away_on_3_id,away_on_4_id,away_on_5_id,away_on_6_id,away_goalie_id,
+    home_on_1_id,home_on_2_id,home_on_3_id,home_on_4_id,home_on_5_id,home_on_6_id,home_goalie_id,
     seconds_since_last,
-    offwing,
     xG,
     CASE
         WHEN xG IS NULL THEN 1
         WHEN xG <.1 THEN 0.25
         ELSE (xG*3)
-    END as size
+    END as size,
+    info.teamLogo as logo,
+    names.Player as "name",
 FROM 
-    pbp
+    sample_pbp
+LEFT JOIN info
+    ON sample_pbp.team=info.triCode AND sample_pbp.season=info.seasonId
+LEFT JOIN names
+    ON sample_pbp.skater_id=names.ID
 WHERE
     game_title = '${inputs.game_options.value}'
 AND
@@ -45,16 +53,24 @@ AND
     team IS NOT NULL
 ```
 
+```sql link
+SELECT DISTINCT
+    '/games/' || game_id as link
+FROM sample_pbp
+WHERE
+    game_title = '${inputs.game_options.value}'
+```
+
 ```sql dates
 SELECT DISTINCT 
 	game_date
-FROM pbp
+FROM sample_pbp
 ```
 
 ```sql games
 SELECT DISTINCT 
 	game_title
-FROM pbp
+FROM sample_pbp
 WHERE
     game_date = '${inputs.date.value}'
 ```
@@ -62,7 +78,7 @@ WHERE
 ```sql events
 SELECT DISTINCT 
 	event_type
-FROM pbp
+FROM sample_pbp
 WHERE
     event_type NOT IN ('change','challenge','EGPID','delayed-penalty','shootout-complete')
 AND
@@ -72,7 +88,7 @@ AND
 ```sql strengths
 SELECT DISTINCT 
 	strength_state
-FROM pbp
+FROM sample_pbp
 WHERE strength_state IN (
     '0v1',
     '1v0',
@@ -96,6 +112,7 @@ WHERE strength_state IN (
 
 ```sql team_summary
 SELECT
+    '/games/' || game_id as gameLink,
     team as Team, 
     SUM(CASE WHEN event_type IN ('goal') THEN 1 ELSE 0 END) as Goals,
     SUM(CASE WHEN event_type IN ('shot-on-goal','goal') THEN 1 ELSE 0 END) as Shots,
@@ -105,7 +122,7 @@ SELECT
     SUM(CASE WHEN event_type IN ('takeaway') THEN 1 ELSE 0 END) as Takeaways,
     SUM(CASE WHEN event_type IN ('hit') THEN 1 ELSE 0 END) as Hits
 FROM ${plays}
-GROUP BY team
+GROUP BY team, game_id
 ```
 
 <DateInput
@@ -142,7 +159,6 @@ GROUP BY team
 
 <div style="position: relative; width: 100%; height: 230px;">
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: none !important; z-index: 1; transform: translateY(-10px);">
-        
         <BubbleChart 
             data={plays}
             x=x
@@ -154,8 +170,8 @@ GROUP BY team
             outlineColor = #FFFFFF
             xMin = -100
             xMax = 100
-            yMin = -45
-            yMax = 45
+            yMin = -42.5
+            yMax = 42.5
             xAxisLabels=False
             yAxisLabels=False
             xGridlines=False
@@ -379,7 +395,7 @@ GROUP BY team
     </div>
 </div>
 <br><br>
-<DataTable data={team_summary}>
+<DataTable data={team_summary} rows=50 rowShading=true headerColor=#0000ff headerFontColor=white downloadable=false>
     <Column id=Team align=center />
     <Column id=Goals align=center/>
     <Column id=Shots align=center/>
@@ -390,39 +406,24 @@ GROUP BY team
     <Column id=Hits align=center/>
 </DataTable>
 
-<DataTable data={plays}>
+<Link
+    url={link[0].link}
+    label="Full Game Stats"
+/>
+
+<DataTable data={plays} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white sort=event_num compact=true link=playerLink downloadable=false>
     <Column id=event_num align=center title="#"/>
     <Column id=period align=center/>
     <Column id=seconds_elapsed align=center title="Seconds"/>
+    <Column id=strength_state align=center/>
 	<Column id=event_type align=center title="Event"/>
     <Column id=description align=center/>
-    <Column id=strength_state align=center title="Strength"/>
+    <Column id=logo align=center contentType=image/>
     <Column id=team align=center/>
-    <Column id=skater align=center/>
-    <Column id=skater_2 align=center/>
-    <Column id=skater_3 align=center/>
+    <Column id=name align=center title="Player"/>
     <Column id=shot_type align=center/>
     <Column id=zone_code align=center/>
-    <Column id=x align=center title="x"/>
-	<Column id=y align=center title="y"/>
     <Column id=away_score align=center/>
 	<Column id=home_score align=center/>
-    <Column id=away_on_1 align=center/>
-    <Column id=away_on_2 align=center/>
-    <Column id=away_on_3 align=center/>
-    <Column id=away_on_4 align=center/>
-    <Column id=away_on_5 align=center/>
-    <Column id=away_on_6 align=center/>
-    <Column id=away_goalie align=center/>
-    <Column id=away_coach align=center/>
-    <Column id=home_on_1 align=center/>
-    <Column id=home_on_2 align=center/>
-    <Column id=home_on_3 align=center/>
-    <Column id=home_on_4 align=center/>
-    <Column id=home_on_5 align=center/>
-    <Column id=home_on_6 align=center/>
-    <Column id=home_goalie align=center/>
-    <Column id=home_coach align=center/>
-    <Column id=offwing align=center/>
     <Column id=xG align=center title="xG"/>
 </DataTable>

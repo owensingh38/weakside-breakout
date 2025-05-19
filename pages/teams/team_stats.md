@@ -4,7 +4,6 @@ title: Team Stats
 
 ```sql team_stats
 SELECT 
-	"Season"::INT,
     info.teamLogo,
 	*
 FROM team

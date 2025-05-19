@@ -1,10 +1,9 @@
 ---
-title: Player Stats
+title: Skater Stats
 ---
 
 ```sql skater_stats
 SELECT
-	Season::INT as "Season",
 	(A1+A2) as "A",
 	((A1+A2)/TOI)*60 as "A/60",
 	'/players/' || ID as playerLink,
@@ -84,13 +83,13 @@ FROM skater
 
 <TextInput
     name=age_options
-    title="Age"
+    title="Min. Age"
 	defaultValue=17
 />
 
 <TextInput
     name=toi_options
-    title="TOI"
+    title="Min. TOI"
 	defaultValue=150
 />
 
