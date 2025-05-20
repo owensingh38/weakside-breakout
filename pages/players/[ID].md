@@ -45,6 +45,9 @@ SELECT
    (A1+A2) as "A",
    ((A1+A2)/TOI)*60 as "A/60",
    '/players/' || ID as playerLink,
+   CASE 
+      WHEN Span = 2 THEN 'Regular' ELSE 'Playoffs'
+   END as SpanText,
    info.teamLogo,
    *
 FROM skater
@@ -55,7 +58,7 @@ WHERE
 AND
    Strength IN ${inputs.strength_options.value}
 AND
-   Span = 2
+   Span IN ${inputs.span_options.value}
 ```
 
 ```sql shot_profile
@@ -241,6 +244,11 @@ GROUP BY
 	multiple=true
 />
 
+<Dropdown name=span_options title=Span multiple=true defaultValue=2>
+	<DropdownOption valueLabel="Regular" value=2 />
+	<DropdownOption valueLabel="Playoffs" value=3 />
+</Dropdown>
+
 <Dropdown name=display title=Display defaultValue=1>
 	<DropdownOption valueLabel="Total" value=1 />
 	<DropdownOption valueLabel="Rates" value=2 />
@@ -256,8 +264,9 @@ GROUP BY
 
 {#if inputs.type.value == 1}
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
-      <Column id=Strength align=center />
+   <Column id=Strength align=center />
    <Column id=Season align=center fmt='####-####' />
+   <Column id=SpanText align=center title="Span"/>
 	<Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
 	<Column id=Team align=center />
 	<Column id=Position align=center />
@@ -307,8 +316,9 @@ GROUP BY
 </DataTable>
 {:else }
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
-      <Column id=Strength align=center />
+   <Column id=Strength align=center />
    <Column id=Season align=center fmt='####-####' />
+   <Column id=SpanText align=center title="Span"/>
    <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
    <Column id=Team align=center />
    <Column id=Position align=center />
@@ -342,8 +352,9 @@ GROUP BY
 {:else }
 {#if inputs.type.value == 1}
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
-      <Column id=Strength align=center />
+   <Column id=Strength align=center />
    <Column id=Season align=center fmt='####-####' />
+   <Column id=SpanText align=center title="Span"/>
    <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
    <Column id=Team align=center />
    <Column id=Position align=center />
@@ -369,8 +380,9 @@ GROUP BY
 </DataTable>
 {:else if inputs.type.value == 2}
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
-      <Column id=Strength align=center />
+   <Column id=Strength align=center />
    <Column id=Season align=center fmt='####-####' />
+   <Column id=SpanText align=center title="Span"/>
    <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
    <Column id=Team align=center />
    <Column id=Position align=center />
@@ -395,6 +407,7 @@ GROUP BY
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
    <Column id=Strength align=center />
    <Column id=Season align=center fmt='####-####' />
+   <Column id=SpanText align=center title="Span"/>
    <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
    <Column id=Team align=center />
    <Column id=Position align=center />
