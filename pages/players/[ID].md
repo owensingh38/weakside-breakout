@@ -1,5 +1,5 @@
 ---
-title: Player Stats
+title: Skater Stats
 hide_title: true
 ---
 
@@ -54,118 +54,75 @@ WHERE
    ID = '${params.ID}'
 AND
    Strength IN ${inputs.strength_options.value}
+AND
+   Span = 2
 ```
 
 ```sql shot_profile
-SELECT
-    'Shot Rate' as metric, ("INDV-SR"*100) as value
-FROM skater
+SELECT *
+FROM(
+   SELECT
+      'Shot Rate' as metric, ("INDV-SR"*100) as value, Strength
+   FROM skater
+   WHERE
+      ID = '${params.ID}' 
+   AND
+      Season = '${inputs.shot_season.value}'
+   AND
+      Team = '${inputs.shot_team.value}'
+   UNION ALL
+   SELECT
+      'Shot Quality' as metric, ("INDV-SQ"*100) as value, Strength
+   FROM skater
+   WHERE
+      ID = '${params.ID}' 
+   AND
+      Season = '${inputs.shot_season.value}'
+   AND
+      Team = '${inputs.shot_team.value}'
+   UNION ALL
+   SELECT
+      'Finishing' as metric, ("INDV-FN"*100) as value, Strength
+   FROM skater
+   WHERE
+      ID = '${params.ID}' 
+   AND
+      Season = '${inputs.shot_season.value}'
+   AND
+      Team = '${inputs.shot_team.value}'
+   UNION ALL
+   SELECT
+      'Goal Induction' as metric, ("LiGIn-P"*100) as value, Strength
+   FROM skater
+   WHERE
+      ID = '${params.ID}' 
+   AND
+      Season = '${inputs.shot_season.value}'
+   AND
+      Team = '${inputs.shot_team.value}'
+   UNION ALL
+   SELECT
+      'Goals' as metric, ("Gi/60-P"*100) as value, Strength
+   FROM skater
+   WHERE
+      ID = '${params.ID}' 
+   AND
+      Season = '${inputs.shot_season.value}'
+   AND
+      Team = '${inputs.shot_team.value}'
+   UNION ALL
+   SELECT
+      'xGoals' as metric, ("xGi/60-P"*100) as value, Strength
+   FROM skater
+   WHERE
+      ID = '${params.ID}' 
+   AND
+      Season = '${inputs.shot_season.value}'
+   AND
+      Team = '${inputs.shot_team.value}'
+   )
 WHERE
-   ID = '${params.ID}' 
-AND
-   Season = '${inputs.shot_season.value}'
-AND
-   Team = '${inputs.shot_team.value}'
-UNION ALL
-SELECT
-    'Shot Quality' as metric, ("INDV-SQ"*100) as value
-FROM skater
-WHERE
-   ID = '${params.ID}' 
-AND
-   Season = '${inputs.shot_season.value}'
-AND
-   Team = '${inputs.shot_team.value}'
-UNION ALL
-SELECT
-    'Finishing' as metric, ("INDV-FN"*100) as value
-FROM skater
-WHERE
-   ID = '${params.ID}' 
-AND
-   Season = '${inputs.shot_season.value}'
-AND
-   Team = '${inputs.shot_team.value}'
-UNION ALL
-SELECT
-    'Goal Induction' as metric, ("LiGIn-P"*100) as value
-FROM skater
-WHERE
-   ID = '${params.ID}' 
-AND
-   Season = '${inputs.shot_season.value}'
-AND
-   Team = '${inputs.shot_team.value}'
-UNION ALL
-SELECT
-    'Goals' as metric, ("Gi/60-P"*100) as value
-FROM skater
-WHERE
-   ID = '${params.ID}' 
-AND
-   Season = '${inputs.shot_season.value}'
-AND
-   Team = '${inputs.shot_team.value}'
-UNION ALL
-SELECT
-    'xGoals' as metric, ("xGi/60-P"*100) as value
-FROM skater
-WHERE
-   ID = '${params.ID}' 
-AND
-   Season = '${inputs.shot_season.value}'
-AND
-   Team = '${inputs.shot_team.value}'
-```
-
-```sql timeline
-SELECT
-    Age, 'Shot Rate' as metric, "INDV-SRI" as value
-FROM skater
-WHERE
-   ID = '${params.ID}' 
-AND
-   TOI >= 150
-UNION ALL
-SELECT
-    Age, 'Shot Quality' as metric, "INDV-SQI" as value
-FROM skater
-WHERE
-   ID = '${params.ID}' 
-AND
-   TOI >= 150
-UNION ALL
-SELECT
-    Age, 'Finishing' as metric, "INDV-FNI" as value
-FROM skater
-WHERE
-   ID = '${params.ID}'
-AND
-   TOI >= 150 
-UNION ALL
-SELECT
-    Age, 'Goal Induction' as metric, "LiGIn" as value
-FROM skater
-WHERE
-   ID = '${params.ID}' 
-AND
-   TOI >= 150
-UNION ALL
-SELECT
-    Age, 'Goals' as metric, "Gi/60" as value
-FROM skater
-WHERE
-   ID = '${params.ID}' 
-AND
-   TOI >= 150
-UNION ALL
-SELECT
-    Age, 'xGoals' as metric, "xGi/60" as value
-FROM skater
-WHERE
-   ID = '${params.ID}' 
-AND
-   TOI >= 150
+   Strength IN ${inputs.strength_options_2.value}
 ```
 
 ```sql seasons
@@ -198,6 +155,16 @@ WHERE
    ID = '${params.ID}' 
 ```
 
+```sql strengths_multiple
+SELECT DISTINCT 
+	Strength
+FROM skater
+WHERE
+   ID = '${params.ID}' 
+AND
+   Strength != 'All'
+```
+
 ```sql plays
 SELECT
    season,
@@ -213,7 +180,9 @@ SELECT
       ELSE "description"
    END as "description",
    '/players/' || skater_id as playerLink,
-   strength_state,
+   CASE 
+      WHEN strength_state NOT IN ('5v5','5v4','4v5') THEN 'Other' ELSE strength_state
+   END as strength_state,
    team,
    skater_id,
    skater_id_2,
@@ -243,7 +212,7 @@ AND
 AND
    team = '${inputs.shot_team.value}'
 AND
-   strength_state IN ${inputs.strength_options.value}
+   strength_state IN ${inputs.strength_options_2.value}
 ORDER BY
    game_date asc, event_num asc
 ```
@@ -268,7 +237,7 @@ GROUP BY
    name=strength_options
    value=Strength
    title=Strength
-   defaultValue="5v5"
+   defaultValue="All"
 	multiple=true
 />
 
@@ -287,6 +256,7 @@ GROUP BY
 
 {#if inputs.type.value == 1}
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
+      <Column id=Strength align=center />
    <Column id=Season align=center fmt='####-####' />
 	<Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
 	<Column id=Team align=center />
@@ -314,7 +284,8 @@ GROUP BY
 {:else if inputs.type.value == 2}
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
    <Column id=Season align=center fmt='####-####' />
-	<Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
+	<Column id=Strength align=center />
+   <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
 	<Column id=Team align=center />
 	<Column id=Position align=center />
    <Column id=Age align=center />
@@ -336,6 +307,7 @@ GROUP BY
 </DataTable>
 {:else }
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
+      <Column id=Strength align=center />
    <Column id=Season align=center fmt='####-####' />
    <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
    <Column id=Team align=center />
@@ -370,6 +342,7 @@ GROUP BY
 {:else }
 {#if inputs.type.value == 1}
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
+      <Column id=Strength align=center />
    <Column id=Season align=center fmt='####-####' />
    <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
    <Column id=Team align=center />
@@ -396,6 +369,7 @@ GROUP BY
 </DataTable>
 {:else if inputs.type.value == 2}
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
+      <Column id=Strength align=center />
    <Column id=Season align=center fmt='####-####' />
    <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
    <Column id=Team align=center />
@@ -419,6 +393,7 @@ GROUP BY
 </DataTable>
 {:else }
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
+   <Column id=Strength align=center />
    <Column id=Season align=center fmt='####-####' />
    <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
    <Column id=Team align=center />
@@ -456,6 +431,15 @@ GROUP BY
 <h1 style="font-size:70%;">Percentiles at 5v5 and relative to player position (minimum TOI is 150 minutes at 5v5)</h1>
 
 <Dropdown
+   data={strengths_multiple}
+   name=strength_options_2
+   value=Strength
+   title=Strength
+   defaultValue="5v5"
+	multiple=true
+/>
+
+<Dropdown
     data={seasons}
     name=shot_season
     value=Season
@@ -474,8 +458,10 @@ GROUP BY
     data={shot_profile}
     x=metric
     y=value
+    series=Strength
     yMax=100
     swapXY=true
+    type=grouped
     downloadableData=False
     colorPalette={[color[0].PC]}
 />
@@ -491,6 +477,7 @@ GROUP BY
       <DropdownOption valueLabel="shot-on-goal" value="shot-on-goal" />
       <DropdownOption valueLabel="goal" value="goal" />
    </Dropdown>
+
 <div style="display:flex; justify-content: space-between;">
    <div style="width:500px;">
       <BubbleChart

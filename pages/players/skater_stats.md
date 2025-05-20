@@ -15,11 +15,13 @@ RIGHT JOIN info
 WHERE
 	SUBSTRING(Season,1,8) IN ${inputs.season_options.value}
 AND
+	Span = ${inputs.span_options.value}
+AND
 	Age >= ${inputs.age_options}
 AND
 	TOI >= ${inputs.toi_options}
 AND
-	Strength IN ${inputs.strength_options.value}
+	Strength = '${inputs.strength_options.value}'
 AND
 	Position IN ${inputs.position_options.value}
 ```
@@ -51,13 +53,17 @@ FROM skater
 	multiple=true
 />
 
+<Dropdown name=span_options title=Span defaultValue=2>
+	<DropdownOption valueLabel="Regular" value=2 />
+	<DropdownOption valueLabel="Playoffs" value=3 />
+</Dropdown>
+
 <Dropdown
     data={strengths}
     name=strength_options
     value=Strength
 	title=Strength
     defaultValue="5v5"
-	multiple=true
 />
 
 <Dropdown
@@ -79,7 +85,6 @@ FROM skater
 	<DropdownOption valueLabel="On-Ice" value=2 />
 	<DropdownOption valueLabel="Goal Impact" value=3 />
 </Dropdown>
-
 
 <TextInput
     name=age_options

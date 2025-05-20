@@ -9,7 +9,7 @@
 <EvidenceDefaultLayout {data} 
 	logo='{base}/wsba.png'
 	neverShowQueries=true 
-	githubRepo=https://github.com/owensingh38/wsba_hockey 
+	githubRepo=https://github.com/owensingh38/ 
 	fullWidth=true
 	builtWithEvidence=false>
 	<slot slot="content" />
