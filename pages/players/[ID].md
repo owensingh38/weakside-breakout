@@ -233,7 +233,7 @@ SELECT
       WHEN xG <.1 THEN 0.25
       ELSE (xG*3)
    END as size
-FROM pbp
+FROM sample_pbp
 WHERE
    skater_id = '${params.ID}'
 AND
@@ -248,6 +248,15 @@ ORDER BY
    game_date asc, event_num asc
 ```
 
+```sql shot_types   
+SELECT 
+   shot_type as "name",
+   COUNT(event_type) as "value"
+FROM ${plays} 
+GROUP BY
+   shot_type
+```
+
 # <center> <Value data={stats} column=Player /> </center>
 <center><img src={headshot[0].head} class="h-50" /></center>
 
@@ -255,11 +264,11 @@ ORDER BY
 
 <h1>Player Metrics Viewer</h1>
 <Dropdown
-    data={strengths}
-    name=strength_options
-    value=Strength
-	title=Strength
-    defaultValue="5v5"
+   data={strengths}
+   name=strength_options
+   value=Strength
+   title=Strength
+   defaultValue="5v5"
 	multiple=true
 />
 
@@ -471,167 +480,192 @@ ORDER BY
     colorPalette={[color[0].PC]}
 />
 
-<h1 style="font-size:90%;">Shot Chart</h1>
-<BubbleChart
-   data={plays}
-   x=x
-   y=y
-   size=size
-   tooltipTitle=description
-   outlineWidth = 2
-   outlineColor = #FFFFFF
-   xMin = -42.5
-   xMax = 42.5
-   yMin = 0
-   yMax = 100
-   xAxisLabels=False
-   yAxisLabels=False
-   xGridlines=False
-   yGridlines=False
-   xTickMarks=False
-   yTickMarks=False
-   xBaseline=False
-   yBaseline=False
-   emptySet=warn
-   emptyMessage='Select a season and a team...'
-   downloadableImage=true
-   downloadableData=false
-   chartAreaHeight=320
-   colorPalette={[color[0].PC]}
->
-   <ReferenceLine
-      x=-42.5
-      y=0
-      x2=42.5
-      color=red
-      hideValue=true
-      lineWidth=3 lineType=solid/
-      opacity=0.25
-   />
-   <ReferenceLine
-      x=-42.5
-      y=89
-      x2=42.5
-      color=red
-      hideValue=true
-      lineWidth=3 lineType=solid/
-      opacity=0.25
-   />
-   <ReferenceLine
-      x=-42.5
-      y=24
-      x2=42.5
-      color=blue
-      hideValue=true
-      lineWidth=3 lineType=solid/
-   />
-   <ReferencePoint
-      x=22.5
-      y=14
-      color=red
-      symbolSize=15
-      symbolOpacity=0.25
-   />
-   <ReferencePoint
-      x=-22.5
-      y=14
-      color=red
-      symbolSize=15
-      symbolOpacity=0.25
-   />
-   <ReferencePoint
-      x=22.5
-      y=70
-      color=red
-      symbolSize=40
-      symbolOpacity=0.25
-            />
-   <ReferencePoint
-      x=-22.5
-      y=70
-      color=red
-      symbolSize=40
-      symbolOpacity=0.25
-   />
-   <ReferenceLine
-      x=3
-      y=89
-      x2=3
-      y2=96
-      color=red
-      hideValue=true
-      lineWidth=3 lineType=solid/
-   />
-   <ReferenceLine
-      x=-3
-      y=89
-      x2=-3
-      y2=96
-      color=red
-      hideValue=true
-      lineWidth=3 lineType=solid/
-   />
-   <ReferenceLine
-      x=3
-      y=96
-      x2=-3
-      y2=96
-      color=red
-      hideValue=true
-      lineWidth=3 lineType=solid/
-   />
-   <ReferenceLine
-      x=-4
-      y=89
-      x2=-4
-      y2=83
-      color=red
-      hideValue=true
-      lineWidth=3 lineType=solid/
-   />
-   <ReferenceLine
-      x=4
-      y=89
-      x2=4
-      y2=83
-      color=red
-      hideValue=true
-      lineWidth=3 lineType=solid/
-   />
-   <ReferenceLine
-      x=4
-      y=83
-      x2=-4
-      y2=83
-      color=red
-      hideValue=true
-      lineWidth=3 lineType=solid/
-   />
-   <ReferenceArea xMin=-3 xMax=3 areaColor=blue yMin=83 yMax=89 opacity=0.25/>
-</BubbleChart>
-
 <Dropdown
-    name=event_options
-    value=event_type
-	 title=Event
-    multiple=true
-    selectAllByDefault=true
->
-   <DropdownOption valueLabel="missed-shot" value="missed-shot" />
-   <DropdownOption valueLabel="shot-on-goal" value="shot-on-goal" />
-   <DropdownOption valueLabel="goal" value="goal" />
-</Dropdown>
+      name=event_options
+      value=event_type
+      title=Event
+      multiple=true
+      selectAllByDefault=true
+   >
+      <DropdownOption valueLabel="missed-shot" value="missed-shot" />
+      <DropdownOption valueLabel="shot-on-goal" value="shot-on-goal" />
+      <DropdownOption valueLabel="goal" value="goal" />
+   </Dropdown>
+<div style="display:flex; justify-content: space-between;">
+   <div style="width:500px;">
+      <BubbleChart
+         data={plays}
+         x=x
+         y=y
+         size=size
+         title="Shot Chart"
+         tooltipTitle=description
+         outlineWidth = 2
+         outlineColor = #FFFFFF
+         xMin = -42.5
+         xMax = 42.5
+         yMin = 0
+         yMax = 100
+         xAxisLabels=False
+         yAxisLabels=False
+         xGridlines=False
+         yGridlines=False
+         xTickMarks=False
+         yTickMarks=False
+         xBaseline=False
+         yBaseline=False
+         emptySet=warn
+         emptyMessage='Select a season and a team...'
+         downloadableImage=true
+         downloadableData=false
+         chartAreaHeight=320
+         colorPalette={[color[0].PC]}
+      >
+         <ReferenceLine
+            x=-42.5
+            y=0
+            x2=42.5
+            color=red
+            hideValue=true
+            lineWidth=3 lineType=solid/
+            opacity=0.25
+         />
+         <ReferenceLine
+            x=-42.5
+            y=89
+            x2=42.5
+            color=red
+            hideValue=true
+            lineWidth=3 lineType=solid/
+            opacity=0.25
+         />
+         <ReferenceLine
+            x=-42.5
+            y=24
+            x2=42.5
+            color=blue
+            hideValue=true
+            lineWidth=3 lineType=solid/
+         />
+         <ReferencePoint
+            x=22.5
+            y=14
+            color=red
+            symbolSize=15
+            symbolOpacity=0.25
+         />
+         <ReferencePoint
+            x=-22.5
+            y=14
+            color=red
+            symbolSize=15
+            symbolOpacity=0.25
+         />
+         <ReferencePoint
+            x=22.5
+            y=70
+            color=red
+            symbolSize=40
+            symbolOpacity=0.25
+                  />
+         <ReferencePoint
+            x=-22.5
+            y=70
+            color=red
+            symbolSize=40
+            symbolOpacity=0.25
+         />
+         <ReferenceLine
+            x=3
+            y=89
+            x2=3
+            y2=96
+            color=red
+            hideValue=true
+            lineWidth=3 lineType=solid/
+         />
+         <ReferenceLine
+            x=-3
+            y=89
+            x2=-3
+            y2=96
+            color=red
+            hideValue=true
+            lineWidth=3 lineType=solid/
+         />
+         <ReferenceLine
+            x=3
+            y=96
+            x2=-3
+            y2=96
+            color=red
+            hideValue=true
+            lineWidth=3 lineType=solid/
+         />
+         <ReferenceLine
+            x=-4
+            y=89
+            x2=-4
+            y2=83
+            color=red
+            hideValue=true
+            lineWidth=3 lineType=solid/
+         />
+         <ReferenceLine
+            x=4
+            y=89
+            x2=4
+            y2=83
+            color=red
+            hideValue=true
+            lineWidth=3 lineType=solid/
+         />
+         <ReferenceLine
+            x=4
+            y=83
+            x2=-4
+            y2=83
+            color=red
+            hideValue=true
+            lineWidth=3 lineType=solid/
+         />
+         <ReferenceArea xMin=-3 xMax=3 areaColor=blue yMin=83 yMax=89 opacity=0.25/>
+      </BubbleChart>
+   </div>
+   <div style="width:400px; align:center;">
+      <ECharts config={
+         {
+            title:{
+               text: "Shot Type Composition"
+            },
+            tooltip: {
+                  formatter: '{b}: {c} ({d}%)'
+            },
+            series: [
+            {
+               type: 'pie',
+               radius: ['40%', '70%'],
+               data: [...shot_types],
+            }
+            ]
+            }
+         }
+      />
+   </div>
+   <div style="width:550px">
+      <DataTable data={plays} rows=10 search=true rowShading=true headerColor=#0000ff headerFontColor=white compact=true downloadable=false title="Shot Table">
+      <Column id=game_date align=center title="Date"/>
+      <Column id=game_title align=center title="Game"/>
+      <Column id=period align=center/>
+      <Column id=seconds_elapsed align=center title="Seconds"/>
+      <Column id=strength_state align=center/>
+      <Column id=event_type align=center title="Event"/>
+      <Column id=description align=center/>
+      <Column id=shot_type align=center/>
+      <Column id=away_score align=center/>
+      <Column id=home_score align=center/>
+      <Column id=xG align=center title="xG"/>
+   </DataTable>
+   </div>
+</div>
 
-<DataTable data={plays} rows=10 search=true rowShading=true headerColor=#0000ff headerFontColor=white compact=true downloadable=false>
-   <Column id=game_date align=center title="Date"/>
-   <Column id=game_title align=center title="Game"/>
-   <Column id=period align=center/>
-   <Column id=seconds_elapsed align=center title="Seconds"/>
-   <Column id=strength_state align=center/>
-   <Column id=event_type align=center title="Event"/>
-   <Column id=description align=center/>
-   <Column id=shot_type align=center/>
-   <Column id=away_score align=center/>
-   <Column id=home_score align=center/>
-   <Column id=xG align=center title="xG"/>
-</DataTable>

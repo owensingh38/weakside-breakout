@@ -17,6 +17,7 @@ SELECT
     '/players/' || skater_id as playerLink,
     strength_state,
     team,
+    venue,
     skater_id,
     skater_id_2,
     skater_id_3,
@@ -38,11 +39,11 @@ SELECT
     info.teamLogo as logo,
     names.Player as "name",
 FROM 
-    pbp
+    sample_pbp
 LEFT JOIN info
-    ON pbp.team=info.triCode AND pbp.season=info.seasonId
+    ON sample_pbp.team=info.triCode AND sample_pbp.season=info.seasonId
 LEFT JOIN names
-    ON pbp.skater_id=names.ID
+    ON sample_pbp.skater_id=names.ID
 WHERE
     game_title = '${inputs.game_options.value}'
 AND
@@ -56,7 +57,7 @@ AND
 ```sql link
 SELECT DISTINCT
     '/games/' || game_id as link
-FROM pbp
+FROM sample_pbp
 WHERE
     game_title = '${inputs.game_options.value}'
 ```
@@ -64,13 +65,13 @@ WHERE
 ```sql dates
 SELECT DISTINCT 
 	game_date
-FROM pbp
+FROM sample_pbp
 ```
 
 ```sql games
 SELECT DISTINCT 
 	game_title
-FROM pbp
+FROM sample_pbp
 WHERE
     game_date = '${inputs.date.value}'
 ```
@@ -78,7 +79,7 @@ WHERE
 ```sql events
 SELECT DISTINCT 
 	event_type
-FROM pbp
+FROM sample_pbp
 WHERE
     event_type NOT IN ('change','challenge','EGPID','delayed-penalty','shootout-complete')
 AND
@@ -88,7 +89,7 @@ AND
 ```sql strengths
 SELECT DISTINCT 
 	strength_state
-FROM pbp
+FROM sample_pbp
 WHERE strength_state IN (
     '0v1',
     '1v0',
@@ -112,17 +113,25 @@ WHERE strength_state IN (
 
 ```sql team_summary
 SELECT
-    '/games/' || game_id as gameLink,
-    team as Team, 
-    SUM(CASE WHEN event_type IN ('goal') THEN 1 ELSE 0 END) as Goals,
-    SUM(CASE WHEN event_type IN ('shot-on-goal','goal') THEN 1 ELSE 0 END) as Shots,
-    SUM(CASE WHEN event_type IN ('missed-shot','shot-on-goal','goal') THEN 1 ELSE 0 END) as Fenwick,
-    SUM(xG) as xG,
-    SUM(CASE WHEN event_type IN ('giveaway') THEN 1 ELSE 0 END) as Giveaways,
-    SUM(CASE WHEN event_type IN ('takeaway') THEN 1 ELSE 0 END) as Takeaways,
-    SUM(CASE WHEN event_type IN ('hit') THEN 1 ELSE 0 END) as Hits
-FROM ${plays}
-GROUP BY team, game_id
+    p.*,info.teamLogo as logo
+FROM
+    (SELECT
+        team as Team, 
+        venue,
+        season,
+        SUM(CASE WHEN event_type IN ('goal') THEN 1 ELSE 0 END) as Goals,
+        SUM(CASE WHEN event_type IN ('shot-on-goal','goal') THEN 1 ELSE 0 END) as Shots,
+        SUM(CASE WHEN event_type IN ('missed-shot','shot-on-goal','goal') THEN 1 ELSE 0 END) as Fenwick,
+        SUM(xG) as xG,
+        SUM(CASE WHEN event_type IN ('giveaway') THEN 1 ELSE 0 END) as Giveaways,
+        SUM(CASE WHEN event_type IN ('takeaway') THEN 1 ELSE 0 END) as Takeaways,
+        SUM(CASE WHEN event_type IN ('hit') THEN 1 ELSE 0 END) as Hits
+    FROM ${plays} as p
+    GROUP BY team, venue, season, game_id) as p
+LEFT JOIN info
+    ON p.team=info.triCode AND p.season=info.seasonId
+ORDER BY
+    venue asc
 ```
 
 <DateInput
@@ -157,8 +166,9 @@ GROUP BY team, game_id
     selectAllByDefault=true
 />
 
-<div style="position: relative; width: 100%; height: 230px;">
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: none !important; z-index: 1; transform: translateY(-10px);">
+<div style="position: relative; display: flex; justify-content: space-between; width: 100%; height: 230px;">
+    <Image url={team_summary[0].logo} width=400 height=200/>
+    <div style="width: 600px; transform: translateY(-10px); ">
         <BubbleChart 
             data={plays}
             x=x
@@ -393,9 +403,11 @@ GROUP BY team, game_id
             />
         </BubbleChart>
     </div>
+    <Image url={team_summary[1].logo} height=200/>
 </div>
 <br><br>
 <DataTable data={team_summary} rows=50 rowShading=true headerColor=#0000ff headerFontColor=white downloadable=false>
+    <Column id=logo align=center contentType=image height=20px/>
     <Column id=Team align=center />
     <Column id=Goals align=center/>
     <Column id=Shots align=center/>
@@ -411,14 +423,14 @@ GROUP BY team, game_id
     label="Full Game Stats"
 />
 
-<DataTable data={plays} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white sort=event_num compact=true link=playerLink downloadable=false>
+<DataTable data={plays} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white sort=event_num compact=true downloadable=false>
     <Column id=event_num align=center title="#"/>
     <Column id=period align=center/>
     <Column id=seconds_elapsed align=center title="Seconds"/>
     <Column id=strength_state align=center/>
 	<Column id=event_type align=center title="Event"/>
     <Column id=description align=center/>
-    <Column id=logo align=center contentType=image/>
+    <Column id=logo align=center contentType=image height=20px/>
     <Column id=team align=center/>
     <Column id=name align=center title="Player"/>
     <Column id=shot_type align=center/>
