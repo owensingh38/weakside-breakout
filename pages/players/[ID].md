@@ -192,8 +192,10 @@ SELECT
    skater_id_3,
    shot_type,
    zone_code,
-   -(y_fixed) as x,
-   (x_fixed) as y,
+   CASE WHEN
+      x_adj < 0 THEN -y_adj ELSE y_adj
+   END as x,
+   ABS(x_adj) as y,
    away_score,
    home_score,
    away_on_1_id,away_on_2_id,away_on_3_id,away_on_4_id,away_on_5_id,away_on_6_id,away_goalie_id,
@@ -232,7 +234,7 @@ GROUP BY
 # <center> <Value data={stats} column=Player /> </center>
 <center><img src={headshot[0].head} class="h-50" /></center>
 
-<DataTable data={bio}/>
+<DataTable data={bio} sortable=False/>
 
 <h1>Player Metrics Viewer</h1>
 <Dropdown
@@ -520,6 +522,17 @@ GROUP BY
          downloadableData=false
          chartAreaHeight=320
          colorPalette={[color[0].PC]}
+         echartsOptions={{xAxis: {
+                                type: 'value',
+                                min: -45,    
+                                max: 45, 
+                            },
+                            yAxis: {
+                                type: 'value',
+                                min: 0,
+                                max: 100
+                            }
+                            }}
       >
          <ReferenceLine
             x=-42.5
@@ -548,31 +561,47 @@ GROUP BY
             lineWidth=3 lineType=solid/
          />
          <ReferencePoint
-            x=22.5
-            y=14
+            x=22
+            y=20
             color=red
             symbolSize=15
             symbolOpacity=0.25
          />
          <ReferencePoint
-            x=-22.5
-            y=14
+            x=-22
+            y=20
             color=red
             symbolSize=15
             symbolOpacity=0.25
          />
          <ReferencePoint
-            x=22.5
-            y=70
-            color=red
-            symbolSize=40
+            x=22
+            y=69
+            symbolSize=80
             symbolOpacity=0.25
-                  />
+            symbolBorderColor=red
+            symbolBorderWidth=5
+         />
          <ReferencePoint
-            x=-22.5
-            y=70
+            x=-22
+            y=69
+            symbolSize=80
+            symbolOpacity=0.25
+            symbolBorderColor=red
+            symbolBorderWidth=5
+         />
+         <ReferencePoint
+            x=22
+            y=69
             color=red
-            symbolSize=40
+            symbolSize=15
+            symbolOpacity=0.25
+         />
+         <ReferencePoint
+            x=-22
+            y=69
+            color=red
+            symbolSize=15
             symbolOpacity=0.25
          />
          <ReferenceLine

@@ -101,7 +101,7 @@ FROM skater
 {#if inputs.display.value == 1}
 
 {#if inputs.type.value == 1}
-<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
+<DataTable data={skater_stats} rows=50 search=true rowShading=true rowNumbers=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
 	<Column id=Headshot align=center contentType="image" height=30px/>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
@@ -130,7 +130,7 @@ FROM skater
 	<Column id=Block align=center title="Blocks"/>
 </DataTable>
 {:else if inputs.type.value == 2}
-<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
+<DataTable data={skater_stats} rows=50 search=true rowShading=true rowNumbers=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
     <Column id=Season align=center fmt='####-####' />
@@ -155,7 +155,7 @@ FROM skater
     <Column id=xGF% align=center title="xGF%" fmt='##.00%' />
 </DataTable>
 {:else }
-<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
+<DataTable data={skater_stats} rows=50 search=true rowShading=true rowNumbers=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
     <Column id=Season align=center fmt='####-####' />
@@ -191,7 +191,7 @@ FROM skater
 
 {:else }
 {#if inputs.type.value == 1}
-<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
+<DataTable data={skater_stats} rows=50 search=true rowShading=true rowNumbers=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
     <Column id=Season align=center fmt='####-####' />
@@ -219,7 +219,7 @@ FROM skater
 	<Column id=Block/60 align=center title="Blocks/60"/>	
 </DataTable>
 {:else if inputs.type.value == 2}
-<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
+<DataTable data={skater_stats} rows=50 search=true rowShading=true rowNumbers=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
     <Column id=Season align=center fmt='####-####' />
@@ -244,7 +244,7 @@ FROM skater
     <Column id=xGF% align=center title="xGF%" fmt='##.00%' />
 </DataTable>
 {:else }
-<DataTable data={skater_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
+<DataTable data={skater_stats} rows=50 search=true rowShading=true rowNumbers=true headerColor=#0000ff headerFontColor=white link=playerLink downloadable=false>
     <Column id=Player align=center />
 	<Column id=ID align=center title="ID"/>
     <Column id=Season align=center fmt='####-####' />

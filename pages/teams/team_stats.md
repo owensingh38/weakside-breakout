@@ -13,6 +13,8 @@ WHERE
 	Season IN ${inputs.season_options.value}
 AND
 	Strength IN ${inputs.strength_options.value}
+AND
+    Span = '${inputs.span_options.value}'
 ```
 
 ```sql seasons
@@ -36,6 +38,11 @@ FROM team
 	multiple=true
 />
 
+<Dropdown name=span_options title=Span defaultValue=2>
+	<DropdownOption valueLabel="Regular" value=2 />
+	<DropdownOption valueLabel="Playoffs" value=3 />
+</Dropdown>
+
 <Dropdown
     data={strengths}
     name=strength_options
@@ -58,7 +65,7 @@ FROM team
 {#if inputs.display.value == 1}
 
 {#if inputs.type.value == 1}
-<DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white downloadable=false>
+<DataTable data={team_stats} rows=50 search=true rowShading=true rowNumbers=true headerColor=#0000ff headerFontColor=white downloadable=false>
     <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
     <Column id=Team align=center />
     <Column id=Season align=center fmt='####-####' />
@@ -81,7 +88,7 @@ FROM team
     <Column id=xGF% align=center title="xGF%" fmt='##.00%' />
 </DataTable>
 {:else }
-<DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white downloadable=false>
+<DataTable data={team_stats} rows=50 search=true rowShading=true rowNumbers=true headerColor=#0000ff headerFontColor=white downloadable=false>
     <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
     <Column id=Team align=center />
     <Column id=Season align=center fmt='####-####' />
@@ -102,7 +109,7 @@ FROM team
 
 {:else }
 {#if inputs.type.value == 1}
-<DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white downloadable=false>
+<DataTable data={team_stats} rows=50 search=true rowShading=true rowNumbers=true headerColor=#0000ff headerFontColor=white downloadable=false>
     <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
     <Column id=Team align=center />
     <Column id=Season align=center fmt='####-####' />
@@ -125,7 +132,7 @@ FROM team
     <Column id=xGF% align=center title="xGF%" fmt='##.00%' />
 </DataTable>
 {:else }
-<DataTable data={team_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white downloadable=false>
+<DataTable data={team_stats} rows=50 search=true rowShading=true rowNumbers=true headerColor=#0000ff headerFontColor=white downloadable=false>
     <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
     <Column id=Team align=center />
     <Column id=Season align=center fmt='####-####' />

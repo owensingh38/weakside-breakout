@@ -18,8 +18,6 @@ SELECT
     event_goalie_id as goalie,
     shot_type,
     zone_code,
-    x_fixed,
-    y_fixed,
     x_adj,
     y_adj,
     away_score,
@@ -30,19 +28,19 @@ SELECT
     xG
 
 FROM read_parquet([
-    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20102011.parquet",
-    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20112012.parquet",
-    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20122013.parquet",
-    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20132014.parquet",
-    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20142015.parquet",
-    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20152016.parquet",
-    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20162017.parquet",
-    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20172018.parquet",
-    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20182019.parquet",
-    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20192020.parquet",
-    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20202021.parquet",
-    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20212022.parquet",
-    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20222023.parquet",
-    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20232024.parquet",
-    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/nhl_pbp_20242025.parquet"
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20102011.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20112012.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20122013.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20132014.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20142015.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20152016.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20162017.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20172018.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20182019.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20192020.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20202021.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20212022.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20222023.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20232024.parquet",
+    "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20242025.parquet"
     ])
