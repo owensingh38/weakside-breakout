@@ -22,9 +22,6 @@ SELECT
     y_adj,
     away_score,
     home_score,
-    away_on_1_id,away_on_2_id,away_on_3_id,away_on_4_id,away_on_5_id,away_on_6_id,away_goalie_id,
-    home_on_1_id,home_on_2_id,home_on_3_id,home_on_4_id,home_on_5_id,home_on_6_id,home_goalie_id,
-    penalty_duration,
     xG
 
 FROM read_parquet([
