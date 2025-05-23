@@ -2,14 +2,14 @@
   "name": "weakside-breakout",
   "version": "0.0.1",
   "scripts": {
-    "build": "node --max-old-space-size=8192 node_modules/@evidence-dev/evidence/cli.js build",
-    "build:strict": "node --max-old-space-size=8192 node_modules/@evidence-dev/evidence/cli.js build:strict",
-    "dev": "node --max-old-space-size=8192 node_modules/@evidence-dev/evidence/cli.js dev --open /",
-    "test": "node --max-old-space-size=8192 node_modules/@evidence-dev/evidence/cli.js build",
-    "sources": "node --max-old-space-size=8192 node_modules/@evidence-dev/evidence/cli.js sources",
-    "sources:strict": "node --max-old-space-size=8192 node_modules/@evidence-dev/evidence/cli.js sources --strict",
-    "preview": "node --max-old-space-size=8192 node_modules/@evidence-dev/evidence/cli.js preview"
-},
+    "build": "cross-env VITE_EVIDENCE_SPA=true evidence build",
+    "build:strict": "evidence build:strict",
+    "dev": "evidence dev --open /",
+    "test": "evidence build",
+    "sources": "evidence sources",
+    "sources:strict": "evidence sources --strict",
+    "preview": "cross-env VITE_EVIDENCE_SPA=true evidence preview"
+  },
   "engines": {
     "npm": ">=7.0.0",
     "node": ">=18.0.0"
@@ -38,6 +38,7 @@
     "axios": "^1.7.4"
   },
   "devDependencies": {
-    "@sveltejs/adapter-static": "^3.0.8"
+    "@sveltejs/adapter-static": "^3.0.8",
+    "cross-env": "^7.0.3"
   }
 }
