@@ -196,43 +196,23 @@ AND
 
 ```sql plays
 SELECT
-   season,
-   game_id,
-   game_date,
-   game_title,
-   event_num,
-   "period",
-   seconds_elapsed,
-   event_type,
    CASE
       WHEN event_type IN ('missed-shot','shot-on-goal','goal') THEN "description" || ' - xG: ' || SUBSTRING(("xG"*100),1,5) || '%'
       ELSE "description"
    END as "description",
-   '/players/' || skater_id as playerLink,
    CASE 
       WHEN strength_state NOT IN ('5v5','5v4','4v5') THEN 'Other' ELSE strength_state
    END as strength_state,
-   team,
-   skater_id,
-   skater_id_2,
-   skater_id_3,
-   shot_type,
-   zone_code,
    CASE WHEN
       x_adj < 0 THEN y_adj ELSE y_adj
    END as x,
    ABS(x_adj) as y,
-   away_score,
-   home_score,
-   away_on_1_id,away_on_2_id,away_on_3_id,away_on_4_id,away_on_5_id,away_on_6_id,away_goalie_id,
-   home_on_1_id,home_on_2_id,home_on_3_id,home_on_4_id,home_on_5_id,home_on_6_id,home_goalie_id,
-   seconds_since_last,
-   xG,
    CASE
       WHEN xG IS NULL THEN 1
       WHEN xG <.1 THEN 0.25
       ELSE (xG*3)
-   END as size
+   END as size,
+   *
 FROM pbp
 WHERE
    skater_id = '${params.ID}'

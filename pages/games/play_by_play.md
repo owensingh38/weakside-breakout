@@ -4,33 +4,10 @@ title: Play-by-Play
 
 ```sql plays
 SELECT 
-    season,
-    game_id,
-    event_num,
-    "period",
-    seconds_elapsed,
-    event_type,
     CASE
         WHEN event_type IN ('missed-shot','shot-on-goal','goal') THEN "description" || ' - xG: ' || SUBSTRING(("xG"*100),1,5) || '%'
         ELSE "description"
     END as "description",
-    '/players/' || skater_id as playerLink,
-    strength_state,
-    team,
-    venue,
-    skater_id,
-    skater_id_2,
-    skater_id_3,
-    shot_type,
-    zone_code,
-    x_adj as x,
-    y_adj as y,
-    away_score,
-    home_score,
-    away_on_1_id,away_on_2_id,away_on_3_id,away_on_4_id,away_on_5_id,away_on_6_id,away_goalie_id,
-    home_on_1_id,home_on_2_id,home_on_3_id,home_on_4_id,home_on_5_id,home_on_6_id,home_goalie_id,
-    seconds_since_last,
-    xG,
     CASE
         WHEN xG IS NULL THEN 1
         WHEN xG <.1 THEN 0.25
@@ -38,6 +15,7 @@ SELECT
     END as size,
     info.teamLogo as logo,
     names.Player as "name",
+    *
 FROM 
     pbp
 LEFT JOIN info
@@ -183,8 +161,8 @@ ORDER BY
     <div style="width: 600px; transform: translateY(-10px); ">
         <BubbleChart 
             data={plays}
-            x=x
-            y=y
+            x=x_adj
+            y=y_adj
             series=team
             size=size
             tooltipTitle=description

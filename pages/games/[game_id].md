@@ -8,9 +8,9 @@ SELECT DISTINCT
     team,
     venue,
     info.teamLogo as Logo,
-FROM sample_pbp
+FROM pbp
 LEFT JOIN info
-    ON sample_pbp.team=info.triCode AND sample_pbp.season=info.seasonId
+    ON pbp.team=info.triCode AND pbp.season=info.seasonId
 WHERE
     game_id = '${params.game_id}'
 AND
@@ -25,7 +25,7 @@ SELECT
     game_date,
     venue as "status",
     SUM(CASE WHEN event_type IN ('goal') THEN 1 ELSE 0 END) as goals
-FROM sample_pbp
+FROM pbp
 WHERE
     game_id = '${params.game_id}'
 AND
@@ -49,9 +49,9 @@ SELECT
     END as "description",
     away_score,
     home_score
-FROM sample_pbp
+FROM pbp
 LEFT JOIN info
-    ON sample_pbp.team=info.triCode AND sample_pbp.season=info.seasonId
+    ON pbp.team=info.triCode AND pbp.season=info.seasonId
 WHERE
     game_id = '${params.game_id}'
 AND
@@ -76,7 +76,7 @@ SELECT
     SUM(CASE WHEN event_type IN ('giveaway') THEN 1 ELSE 0 END) as Giveaways,
     SUM(CASE WHEN event_type IN ('takeaway') THEN 1 ELSE 0 END) as Takeaways,
     SUM(CASE WHEN event_type IN ('hit') THEN 1 ELSE 0 END) as Hits
-FROM sample_pbp
+FROM pbp
 WHERE
     game_id = '${params.game_id}'
 AND
