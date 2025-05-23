@@ -481,6 +481,10 @@ ORDER BY
     <Column id=Hits align=center/>
 </DataTable>
 
+<LinkButton url={link[0].link}>
+Full Game Stats
+</LinkButton>
+
 <Dropdown name=data_options defaultValue=1>
 	<DropdownOption valueLabel="Plays" value=1 />
 	<DropdownOption valueLabel="Timelines" value=2 />
