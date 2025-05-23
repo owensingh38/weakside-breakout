@@ -43,4 +43,4 @@ FROM read_parquet([
     "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20222023.parquet",
     "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20232024.parquet",
     "https://f005.backblazeb2.com/file/weakside-breakout/pbp/20242025.parquet"
-    ])
+    ], union_by_name = true)

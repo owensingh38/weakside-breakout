@@ -16,4 +16,4 @@ FROM read_csv([
     'https://f005.backblazeb2.com/file/weakside-breakout/team/wsba_nhl_20222023_team.csv',
     'https://f005.backblazeb2.com/file/weakside-breakout/team/wsba_nhl_20232024_team.csv',
     'https://f005.backblazeb2.com/file/weakside-breakout/team/wsba_nhl_20242025_team.csv'
-    ])
+    ], union_by_name = true)
