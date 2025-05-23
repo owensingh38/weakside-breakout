@@ -56,7 +56,33 @@ RIGHT JOIN info
 WHERE
    ID = '${params.ID}'
 AND
-   Strength IN ${inputs.strength_options.value}
+   Strength = '${inputs.strength_options.value}'
+AND
+   Span IN ${inputs.span_options.value}
+```
+
+```sql game_titles
+SELECT DISTINCT
+   game_id,game_date,game_title
+FROM pbp
+```
+
+```sql log
+SELECT
+   SUBSTRING(t.game_title,1,9) as game_title,
+   t.game_date,
+   info.teamLogo,
+   (A1+A2) as "A",
+	*
+FROM game_log
+LEFT JOIN ${game_titles} as t
+   ON game_log.Game=t.game_id
+LEFT JOIN info
+   ON game_log.Team=info.triCode AND game_log.Season=info.seasonId
+WHERE
+   ID = '${params.ID}'
+AND
+   Strength = '${inputs.strength_options.value}'
 AND
    Span IN ${inputs.span_options.value}
 ```
@@ -193,7 +219,7 @@ SELECT
    shot_type,
    zone_code,
    CASE WHEN
-      x_adj < 0 THEN -y_adj ELSE y_adj
+      x_adj < 0 THEN y_adj ELSE y_adj
    END as x,
    ABS(x_adj) as y,
    away_score,
@@ -237,13 +263,15 @@ GROUP BY
 <DataTable data={bio} sortable=False/>
 
 <h1>Player Metrics Viewer</h1>
+<br>
+<h1 style="font-size:90%;">Season Stats</h1>
+
 <Dropdown
    data={strengths}
    name=strength_options
    value=Strength
    title=Strength
    defaultValue="All"
-	multiple=true
 />
 
 <Dropdown name=span_options title=Span multiple=true defaultValue=2>
@@ -266,14 +294,11 @@ GROUP BY
 
 {#if inputs.type.value == 1}
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
-   <Column id=Strength align=center />
    <Column id=Season align=center fmt='####-####' />
    <Column id=SpanText align=center title="Span"/>
 	<Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
 	<Column id=Team align=center />
-	<Column id=Position align=center />
    <Column id=Age align=center />
-	<Column id=Nationality align=center />
 	<Column id=GP align=center title="GP"/>
    <Column id=TOI align=center title="TOI" fmt='#,###.#0' />
 	<Column id=Gi align=center title="G"/>
@@ -295,12 +320,10 @@ GROUP BY
 {:else if inputs.type.value == 2}
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
    <Column id=Season align=center fmt='####-####' />
-	<Column id=Strength align=center />
-   <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
+   <Column id=SpanText align=center title="Span"/>
+	<Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
 	<Column id=Team align=center />
-	<Column id=Position align=center />
    <Column id=Age align=center />
-	<Column id=Nationality align=center />
 	<Column id=GP align=center title="GP"/>
    <Column id=TOI align=center title="TOI" fmt='#,###.#0' />
 	<Column id=GF align=center title="GF"/>
@@ -318,14 +341,11 @@ GROUP BY
 </DataTable>
 {:else }
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
-   <Column id=Strength align=center />
    <Column id=Season align=center fmt='####-####' />
    <Column id=SpanText align=center title="Span"/>
-   <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
-   <Column id=Team align=center />
-   <Column id=Position align=center />
+	<Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
+	<Column id=Team align=center />
    <Column id=Age align=center />
-   <Column id=Nationality align=center />
    <Column id=GP align=center title="GP"/>
    <Column id=TOI align=center title="TOI" fmt='#,###.#0' />
    <Column id=INDV-SRI-T align=center title="Shot Rate Impact" fmt='#0.####' />
@@ -354,14 +374,11 @@ GROUP BY
 {:else }
 {#if inputs.type.value == 1}
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
-   <Column id=Strength align=center />
    <Column id=Season align=center fmt='####-####' />
    <Column id=SpanText align=center title="Span"/>
-   <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
-   <Column id=Team align=center />
-   <Column id=Position align=center />
+	<Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
+	<Column id=Team align=center />
    <Column id=Age align=center />
-   <Column id=Nationality align=center />
    <Column id=GP align=center title="GP"/>
    <Column id=TOI align=center title="TOI" fmt='#,###.#0' />
    <Column id=Gi/60 align=center title="G/60"/>
@@ -382,14 +399,11 @@ GROUP BY
 </DataTable>
 {:else if inputs.type.value == 2}
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
-   <Column id=Strength align=center />
    <Column id=Season align=center fmt='####-####' />
    <Column id=SpanText align=center title="Span"/>
-   <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
-   <Column id=Team align=center />
-   <Column id=Position align=center />
+	<Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
+	<Column id=Team align=center />
    <Column id=Age align=center />
-   <Column id=Nationality align=center />
    <Column id=GP align=center title="GP"/>
    <Column id=TOI align=center title="TOI" fmt='#,###.#0' />
    <Column id=GF/60 align=center title="GF/60"/>
@@ -407,14 +421,11 @@ GROUP BY
 </DataTable>
 {:else }
 <DataTable data={stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white>
-   <Column id=Strength align=center />
    <Column id=Season align=center fmt='####-####' />
    <Column id=SpanText align=center title="Span"/>
-   <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
-   <Column id=Team align=center />
-   <Column id=Position align=center />
+	<Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
+	<Column id=Team align=center />
    <Column id=Age align=center />
-   <Column id=Nationality align=center />
    <Column id=GP align=center title="GP"/>
    <Column id=TOI align=center title="TOI" fmt='#,###.#0' />
    <Column id=INDV-SRI align=center title="Shot Rate Impact" fmt='#0.####' />
@@ -439,6 +450,52 @@ GROUP BY
 </DataTable>
 {/if}
 
+{/if}
+
+<h1 style="font-size:90%;">Game Log</h1>
+{#if inputs.type.value == 1}
+<DataTable data={log} rows=10 search=true rowShading=true headerColor=#0000ff headerFontColor=white sort=game_date downloadable=false>
+   <Column id=game_title title='Game'/>
+   <Column id=game_date title='Date'/>
+   <Column id=teamLogo title='Logo' contentType='image'/>
+   <Column id=Team/>
+   <Column id=TOI title='TOI'/>
+   <Column id=Gi align=center title="G"/>
+   <Column id=A1 align=center />
+   <Column id=A2 align=center />
+   <Column id=A align=center />
+   <Column id=P align=center />
+   <Column id=Fi align=center title="iFF"/>
+   <Column id=xGi align=center title="ixG"/>
+   <Column id=xGi/Fi align=center title="ixG/iFF"/>
+   <Column id=Gi/xGi align=center title="G/ixG"/>
+   <Column id=Give align=center />
+   <Column id=Take align=center />	
+   <Column id=Penl align=center />
+   <Column id=Draw align=center />	
+   <Column id=PIM align=center title="PIM"/>	
+   <Column id=Block align=center title="Blocks"/>
+</DataTable>
+{:else }
+<DataTable data={log} rows=10 search=true rowShading=true headerColor=#0000ff headerFontColor=white sort=game_date downloadable=false>
+   <Column id=game_title title='Game'/>
+   <Column id=game_date title='Date'/>
+   <Column id=teamLogo title='Logo' contentType='image'/>
+   <Column id=Team/>
+   <Column id=TOI title='TOI'/>
+   <Column id=GF align=center title="GF"/>
+   <Column id=GA align=center title="GA"/>
+   <Column id=FF align=center title="FF"/>
+   <Column id=FA align=center title="FA"/>
+   <Column id=xGF align=center title="xGF"/>
+   <Column id=xGA align=center title="xGA"/>
+   <Column id=xGF/FF align=center title="xGF/FF"/>
+   <Column id=xGA/FA align=center title="xGA/FA"/>
+   <Column id=GF/xGF align=center title="GF/xGF"/>
+   <Column id=GF% align=center title="GF%" fmt='##.00%' />
+   <Column id=FF% align=center title="FF%" fmt='##.00%' />
+   <Column id=xGF% align=center title="xGF%" fmt='##.00%' />
+</DataTable>
 {/if}
 
 <br>
@@ -697,4 +754,3 @@ GROUP BY
    </DataTable>
    </div>
 </div>
-

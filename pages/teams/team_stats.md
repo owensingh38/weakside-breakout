@@ -69,6 +69,7 @@ FROM team
     <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
     <Column id=Team align=center />
     <Column id=Season align=center fmt='####-####' />
+    <Column id=Strength align=center />
 	<Column id=GP align=center title="GP"/>
     <Column id=TOI align=center title="TOI" fmt='#,###.#0' />
 	<Column id=GF align=center title="GF"/>
@@ -92,6 +93,7 @@ FROM team
     <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
     <Column id=Team align=center />
     <Column id=Season align=center fmt='####-####' />
+    <Column id=Strength align=center />
 	<Column id=GP align=center title="GP"/>
     <Column id=TOI align=center title="TOI" fmt='#,###.#0' />
     <Column id=OOFF-SRI-T align=center title="On-Ice Shot Rate Impact For" fmt='#0.####' />
@@ -113,6 +115,7 @@ FROM team
     <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
     <Column id=Team align=center />
     <Column id=Season align=center fmt='####-####' />
+    <Column id=Strength align=center />
 	<Column id=GP align=center title="GP"/>
     <Column id=TOI align=center title="TOI" fmt='#,###.#0' />
 	<Column id=GF/60 align=center title="GF/60"/>
@@ -136,6 +139,7 @@ FROM team
     <Column id=teamLogo align=center contentType="image" height=20px title="Logo"/>
     <Column id=Team align=center />
     <Column id=Season align=center fmt='####-####' />
+    <Column id=Strength align=center />
 	<Column id=GP align=center title="GP"/>
     <Column id=TOI align=center title="TOI" fmt='#,###.#0' />
     <Column id=OOFF-SRI align=center title="On-Ice Shot Rate Impact For" fmt='#0.####' />
