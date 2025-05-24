@@ -2,13 +2,13 @@
   "name": "weakside-breakout",
   "version": "0.0.1",
   "scripts": {
-    "build": "cross-env VITE_EVIDENCE_SPA=true evidence build",
+    "build": "evidence build",
     "build:strict": "evidence build:strict",
     "dev": "evidence dev --open /",
     "test": "evidence build",
     "sources": "evidence sources",
     "sources:strict": "evidence sources --strict",
-    "preview": "cross-env VITE_EVIDENCE_SPA=true evidence preview"
+    "preview": "evidence preview"
   },
   "engines": {
     "npm": ">=7.0.0",
