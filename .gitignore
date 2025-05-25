@@ -9,3 +9,4 @@ static/data
 .env
 .evidence/meta
 sources/wsba/sample_pbp.sql
+wsba_nhl_apps/
