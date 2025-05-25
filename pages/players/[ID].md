@@ -237,6 +237,20 @@ GROUP BY
    shot_type
 ```
 
+```sql event_string
+SELECT
+    STRING_AGG(event_type, ',') as string
+FROM
+    (SELECT DISTINCT event_type FROM pbp WHERE event_type IN ${inputs.event_options.value})
+```
+
+```sql strength_string
+SELECT
+    STRING_AGG(strength_state, ',') as string
+FROM
+    (SELECT DISTINCT strength_state FROM pbp WHERE strength_state IN ${inputs.strength_options_2.value})
+```
+
 # <center> <Value data={stats} column=Player /> </center>
 <center><img src={headshot[0].head} class="h-50" /></center>
 
@@ -517,3 +531,56 @@ GROUP BY
     downloadableData=False
     colorPalette={[color[0].PC]}
 />
+
+<Dropdown
+      name=event_options
+      value=event_type
+      title=Event
+      multiple=true
+      selectAllByDefault=true
+   >
+      <DropdownOption valueLabel="missed-shot" value="missed-shot" />
+      <DropdownOption valueLabel="shot-on-goal" value="shot-on-goal" />
+      <DropdownOption valueLabel="goal" value="goal" />
+   </Dropdown>
+
+<div style="display:flex; justify-content: space-between;">
+   <div style="width:500px;">
+      <iframe height="300" width="100%" frameborder="no" src="https://019705fe-b231-f422-21c2-b5de4097884e.share.connect.posit.cloud?skater={params.ID.slice(0,7)}&season={inputs.shot_season.value}&team={inputs.shot_team.value}&event_type={event_string[0].string}&strength_state={strength_string[0].string}"></iframe>
+   </div>
+   <div style="width:400px; align:center;">
+      <ECharts config={
+         {
+            title:{
+               text: "Shot Type Composition"
+            },
+            tooltip: {
+                  formatter: '{b}: {c} ({d}%)'
+            },
+            series: [
+            {
+               type: 'pie',
+               radius: ['40%', '70%'],
+               data: [...shot_types],
+            }
+            ]
+            }
+         }
+      />
+   </div>
+   <div style="width:550px">
+      <DataTable data={plays} rows=10 search=true rowShading=true headerColor=#0000ff headerFontColor=white compact=true downloadable=false title="Shot Table">
+      <Column id=game_date align=center title="Date"/>
+      <Column id=game_title align=center title="Game"/>
+      <Column id=period align=center/>
+      <Column id=seconds_elapsed align=center title="Seconds"/>
+      <Column id=strength_state align=center/>
+      <Column id=event_type align=center title="Event"/>
+      <Column id=description align=center/>
+      <Column id=shot_type align=center/>
+      <Column id=away_score align=center/>
+      <Column id=home_score align=center/>
+      <Column id=xG align=center title="xG"/>
+   </DataTable>
+   </div>
+</div>
