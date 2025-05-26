@@ -1,5 +1,5 @@
 ---
-title: WSBA NHL Expected Goals Model
+title: xG Model
 ---
 
 <h1>Expected goals is a foundational component to modern hockey analytics.  Despite the increasing distance between private and public models,

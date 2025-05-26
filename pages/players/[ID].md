@@ -584,3 +584,10 @@ FROM
    </DataTable>
    </div>
 </div>
+<br>
+<h1 style="font-size:90%;">On-Ice Shot Heatmaps</h1>
+<h1 style="font-size:70%;">Left-to-Right is Defense-to-Offense for fenwick shots that occur with skater on the ice (weighted by xG).  Blue represents more shots, while red represents fewer.</h1>
+
+<iframe height="400" width="100%" frameborder="no" src="https://01970a6d-a49b-7316-dc75-dcf146792524.share.connect.posit.cloud/?skater={params.ID.slice(0,7)}&season={inputs.shot_season.value}&team={inputs.shot_team.value}&strength_state={strength_string[0].string}"></iframe>
+
+<h1 style="font-size:70%;">If heatmap content fails to load with selected filters refresh the page.</h1>

@@ -31,11 +31,13 @@ SELECT
     FF,
     xGF,
     xGF/FF,
+    GF/xGF,
     "FshF%",
     GA,
     FA,
     xGA,
     xGA/FA,
+    GA/xGA,
     "FshA%",
     F,
     FW,
@@ -43,6 +45,7 @@ SELECT
     "F%",
     Penl,
     Draw,
+    PIM,
     "Block"
 FROM read_parquet([
     'https://f005.backblazeb2.com/file/weakside-breakout/game_log/wsba_nhl_20102011_game_log.parquet',
