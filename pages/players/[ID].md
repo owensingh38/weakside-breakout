@@ -85,6 +85,8 @@ AND
    Strength = '${inputs.strength_options.value}'
 AND
    Span IN ${inputs.span_options.value}
+AND
+   Season = '${inputs.season_options.value}'
 ```
 
 ```sql shot_profile
@@ -224,6 +226,8 @@ AND
    team = '${inputs.shot_team.value}'
 AND
    strength_state IN ${inputs.strength_options_2.value}
+AND
+   season_type = '${inputs.span_options_2.value}'
 ORDER BY
    game_date asc, event_num asc
 ```
@@ -447,6 +451,13 @@ FROM
 {/if}
 
 <h1 style="font-size:90%;">Game Log</h1>
+<Dropdown
+    data={seasons}
+    name=season_options
+    value=Season
+	 title=Season
+    defaultValue="20242025"
+/>
 {#if inputs.type.value == 1}
 <DataTable data={log} rows=10 search=true rowShading=true headerColor=#0000ff headerFontColor=white sort=game_date downloadable=false>
    <Column id=game_title title='Game'/>
@@ -544,9 +555,14 @@ FROM
       <DropdownOption valueLabel="goal" value="goal" />
    </Dropdown>
 
+<Dropdown name=span_options_2 title=Span defaultValue=2>
+	<DropdownOption valueLabel="Regular" value=2 />
+	<DropdownOption valueLabel="Playoffs" value=3 />
+</Dropdown>
+
 <div style="display:flex; justify-content: space-between;">
    <div style="width:500px;">
-      <iframe height="300" width="100%" frameborder="no" src="https://019705fe-b231-f422-21c2-b5de4097884e.share.connect.posit.cloud?skater={params.ID.slice(0,7)}&season={inputs.shot_season.value}&team={inputs.shot_team.value}&event_type={event_string[0].string}&strength_state={strength_string[0].string}"></iframe>
+      <iframe height="300" width="100%" frameborder="no" src="https://019705fe-b231-f422-21c2-b5de4097884e.share.connect.posit.cloud?skater={params.ID.slice(0,7)}&season={inputs.shot_season.value}&team={inputs.shot_team.value}&event_type={event_string[0].string}&strength_state={strength_string[0].string}&strength_state={strength_string[0].string}&season_type={inputs.span_options_2.value}"></iframe>
    </div>
    <div style="width:400px; align:center;">
       <ECharts config={
@@ -586,8 +602,7 @@ FROM
 </div>
 <br>
 <h1 style="font-size:90%;">On-Ice Shot Heatmaps</h1>
-<h1 style="font-size:70%;">Left-to-Right is Defense-to-Offense for fenwick shots that occur with skater on the ice (weighted by xG).  Blue represents more shots, while red represents fewer.</h1>
-
-<iframe height="400" width="100%" frameborder="no" src="https://01970a6d-a49b-7316-dc75-dcf146792524.share.connect.posit.cloud/?skater={params.ID.slice(0,7)}&season={inputs.shot_season.value}&team={inputs.shot_team.value}&strength_state={strength_string[0].string}"></iframe>
+<h1 style="font-size:70%;">Left-to-Right is Defense-to-Offense for fenwick shots that occur with skater on the ice (weighted by xG).  Blue represents higher xG in that location compared to league average, while Red represents fewer xG in that location compared to league average.</h1>
+<iframe height="400" width="100%" frameborder="no" src="https://01970a6d-a49b-7316-dc75-dcf146792524.share.connect.posit.cloud/?skater={params.ID.slice(0,7)}&season={inputs.shot_season.value}&team={inputs.shot_team.value}&strength_state={strength_string[0].string}&season_type={inputs.span_options_2.value}"></iframe>
 
 <h1 style="font-size:70%;">If heatmap content fails to load with selected filters refresh the page.</h1>

@@ -1,5 +1,6 @@
 SELECT 
     season,
+    season_type,
     game_id,
     game_title,
     game_date,

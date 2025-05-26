@@ -10,7 +10,12 @@ title: WeakSide Breakout Analysis
 </div>
 <br>
 <p>
-Explore stats and analytics from the 2010-2011 season and beyond with Evidence!
+Explore stats and analytics from the 2010-2011 season and beyond!
+</p>
+<br>
+<p>
+Website built with Evidence (SQL and Markdown)<br>
+Data visualization integrations made with Shiny (Python)
 </p>
 <br>
 <p>

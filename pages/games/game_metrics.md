@@ -100,12 +100,6 @@ WHERE strength_state IN (
 )
 ```
 
-```sql strengths_2
-SELECT DISTINCT 
-	Strength
-FROM game_log
-```
-
 ```sql team_summary
 SELECT
     p.*,info.teamLogo as logo
@@ -151,51 +145,6 @@ SELECT
     STRING_AGG(strength_state, ',') as string
 FROM
     (SELECT DISTINCT strength_state FROM pbp WHERE strength_state IN ${inputs.strength_options.value})
-```
-
-```sql score
-SELECT
-    team,
-    game_date,
-    venue as "status",
-    SUM(CASE WHEN event_type IN ('goal') THEN 1 ELSE 0 END) as goals
-FROM pbp
-WHERE
-    game_id = '${selected_game[0].game_id}'
-AND
-    team != '0'
-GROUP BY
-    team, game_date, "status"
-ORDER BY
-    "status" asc
-```
-
-```sql away_stats
-SELECT
-   (A1+A2) as "A",
-	'/players/' || ID as playerLink,
-	*
-FROM game_log
-WHERE
-   Game = '${selected_game[0].game_id}'
-AND
-   Team = '${team_summary[0].Team}'
-AND
-   Strength='${inputs.strength_options_2.value}'
-```
-
-```sql home_stats
-SELECT
-   (A1+A2) as "A",
-	'/players/' || ID as playerLink,
-	*
-FROM game_log
-WHERE
-   Game = '${selected_game[0].game_id}'
-AND
-   Team = '${team_summary[1].Team}'
-AND
-   Strength='${inputs.strength_options_2.value}'
 ```
 
 <h1>Play-by-Play</h1>
@@ -252,105 +201,8 @@ AND
 <Dropdown name=data_options defaultValue=1>
 	<DropdownOption valueLabel="Plays" value=1 />
 	<DropdownOption valueLabel="Timelines" value=2 />
-    <DropdownOption valueLabel="Skater Stats" value=3 />
 </Dropdown>
 
-
-{#if inputs.data_options.value==3}
-    <Dropdown name=type title=Type defaultValue=1>
-        <DropdownOption valueLabel="Individual" value=1 />
-        <DropdownOption valueLabel="On-Ice" value=2 />
-    </Dropdown>
-
-    <Dropdown
-        data={strengths_2}
-        name=strength_options_2
-        value=Strength
-        title=Strength
-        defaultValue='5v5'
-    />
-
-    <h1 style="font-size:90%;">{score[0].team} Stats</h1>
-
-    {#if inputs.type.value == 1}
-        <DataTable data={away_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink sort=Player downloadable=false>
-            <Column id=Headshot contentType=image height=20px/>
-            <Column id=Player/>
-            <Column id=ID title='ID'/>
-            <Column id=Position />
-            <Column id=TOI title='TOI'/>
-            <Column id=Gi align=center title="G"/>
-            <Column id=A1 align=center />
-            <Column id=A2 align=center />
-            <Column id=A align=center />
-            <Column id=P align=center />
-            <Column id=Fi align=center title="iFF"/>
-            <Column id=xGi align=center title="ixG"/>
-            <Column id=Give align=center />
-            <Column id=Take align=center />	
-            <Column id=Penl align=center />
-            <Column id=Draw align=center />	
-            <Column id=PIM align=center title="PIM"/>	
-            <Column id=Block align=center title="Blocks"/>
-        </DataTable>
-
-        <h1 style="font-size:90%;">{score[1].team} Stats</h1>
-        <DataTable data={home_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink sort=Player downloadable=false>
-            <Column id=Headshot contentType=image height=20px/>
-            <Column id=Player/>
-            <Column id=ID title='ID'/>
-            <Column id=Position />
-            <Column id=TOI title='TOI'/>
-            <Column id=Gi align=center title="G"/>
-            <Column id=A1 align=center />
-            <Column id=A2 align=center />
-            <Column id=A align=center />
-            <Column id=P align=center />
-            <Column id=Fi align=center title="iFF"/>
-            <Column id=xGi align=center title="ixG"/>
-            <Column id=Give align=center />
-            <Column id=Take align=center />	
-            <Column id=Penl align=center />
-            <Column id=Draw align=center />	
-            <Column id=PIM align=center title="PIM"/>	
-            <Column id=Block align=center title="Blocks"/>
-        </DataTable>
-        {:else }
-        <DataTable data={away_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink sort=Player downloadable=false>
-            <Column id=Headshot contentType=image height=20px/>
-            <Column id=Player/>
-            <Column id=ID title='ID'/>
-            <Column id=Position />
-            <Column id=TOI title='TOI'/>
-            <Column id=GF align=center title="GF"/>
-            <Column id=GA align=center title="GA"/>
-            <Column id=FF align=center title="FF"/>
-            <Column id=FA align=center title="FA"/>
-            <Column id=xGF align=center title="xGF"/>
-            <Column id=xGA align=center title="xGA"/>
-            <Column id=GF% align=center title="GF%" fmt='##.00%' />
-            <Column id=FF% align=center title="FF%" fmt='##.00%' />
-            <Column id=xGF% align=center title="xGF%" fmt='##.00%' />
-        </DataTable>
-        <h1 style="font-size:90%;">{score[1].team} Stats</h1>
-        <DataTable data={home_stats} rows=50 search=true rowShading=true headerColor=#0000ff headerFontColor=white link=playerLink sort=Player downloadable=false>
-            <Column id=Headshot contentType=image height=20px/>
-            <Column id=Player/>
-            <Column id=ID title='ID'/>
-            <Column id=Position />
-            <Column id=TOI title='TOI'/>
-            <Column id=GF align=center title="GF"/>
-            <Column id=GA align=center title="GA"/>
-            <Column id=FF align=center title="FF"/>
-            <Column id=FA align=center title="FA"/>
-            <Column id=xGF align=center title="xGF"/>
-            <Column id=xGA align=center title="xGA"/>
-            <Column id=GF% align=center title="GF%" fmt='##.00%' />
-            <Column id=FF% align=center title="FF%" fmt='##.00%' />
-            <Column id=xGF% align=center title="xGF%" fmt='##.00%' />
-        </DataTable>
-        {/if}
-{:else }
 {#if inputs.data_options.value==2}
     <Dropdown name=timeline_options defaultValue="Goals">
         <DropdownOption valueLabel="Goals" value="Goals" />
@@ -386,5 +238,4 @@ AND
         <Column id=home_score align=center/>
         <Column id=xG align=center title="xG"/>
     </DataTable>
-{/if}
 {/if}
