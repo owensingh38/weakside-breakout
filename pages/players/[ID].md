@@ -462,7 +462,7 @@ FROM
 <DataTable data={log} rows=10 search=true rowShading=true headerColor=#0000ff headerFontColor=white sort=game_date downloadable=false>
    <Column id=game_title title='Game'/>
    <Column id=game_date title='Date'/>
-   <Column id=teamLogo title='Logo' contentType='image'/>
+   <Column id=teamLogo title='Logo' contentType='image' height=20px/>
    <Column id=Team/>
    <Column id=TOI title='TOI'/>
    <Column id=Gi align=center title="G"/>
@@ -485,7 +485,7 @@ FROM
 <DataTable data={log} rows=10 search=true rowShading=true headerColor=#0000ff headerFontColor=white sort=game_date downloadable=false>
    <Column id=game_title title='Game'/>
    <Column id=game_date title='Date'/>
-   <Column id=teamLogo title='Logo' contentType='image'/>
+   <Column id=teamLogo title='Logo' contentType='image' height=20px/>
    <Column id=Team/>
    <Column id=TOI title='TOI'/>
    <Column id=GF align=center title="GF"/>
