@@ -252,7 +252,13 @@ FROM
 SELECT
     STRING_AGG(strength_state, ',') as string
 FROM
-    (SELECT DISTINCT strength_state FROM pbp WHERE strength_state IN ${inputs.strength_options_2.value})
+   (SELECT DISTINCT
+      CASE WHEN
+         strength_state IN ('5v5','5v4','4v5') THEN strength_state ELSE 'Other' END as strength_state
+   FROM pbp 
+   )
+WHERE 
+   strength_state IN ${inputs.strength_options_2.value}
 ```
 
 # <center> <Value data={stats} column=Player /> </center>
@@ -472,8 +478,6 @@ FROM
    <Column id=P align=center />
    <Column id=Fi align=center title="iFF"/>
    <Column id=xGi align=center title="ixG"/>
-   <Column id=xGi/Fi align=center title="ixG/iFF"/>
-   <Column id=Gi/xGi align=center title="G/ixG"/>
    <Column id=Give align=center />
    <Column id=Take align=center />	
    <Column id=Penl align=center />
@@ -494,9 +498,6 @@ FROM
    <Column id=FA align=center title="FA"/>
    <Column id=xGF align=center title="xGF"/>
    <Column id=xGA align=center title="xGA"/>
-   <Column id=xGF/FF align=center title="xGF/FF"/>
-   <Column id=xGA/FA align=center title="xGA/FA"/>
-   <Column id=GF/xGF align=center title="GF/xGF"/>
    <Column id=GF% align=center title="GF%" fmt='##.00%' />
    <Column id=FF% align=center title="FF%" fmt='##.00%' />
    <Column id=xGF% align=center title="xGF%" fmt='##.00%' />
@@ -604,5 +605,4 @@ FROM
 <h1 style="font-size:90%;">On-Ice Shot Heatmaps</h1>
 <h1 style="font-size:70%;">Left-to-Right is Defense-to-Offense for fenwick shots that occur with skater on the ice (weighted by xG).  Blue represents higher xG in that location compared to league average, while Red represents fewer xG in that location compared to league average.</h1>
 <iframe height="400" width="100%" frameborder="no" src="https://01970a6d-a49b-7316-dc75-dcf146792524.share.connect.posit.cloud/?skater={params.ID.slice(0,7)}&season={inputs.shot_season.value}&team={inputs.shot_team.value}&strength_state={strength_string[0].string}&season_type={inputs.span_options_2.value}"></iframe>
-
 <h1 style="font-size:70%;">If heatmap content fails to load with selected filters refresh the page.</h1>
