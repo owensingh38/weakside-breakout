@@ -474,7 +474,6 @@ WHERE
 
    <br>
    <h1 style="font-size:90%;">Shot Profile</h1>
-   <h1 style="font-size:70%;">Percentiles at 5v5 and relative to player position (minimum TOI is 150 minutes at 5v5)</h1>
 
    <Dropdown
       data={player}
@@ -498,18 +497,6 @@ WHERE
       name=shot_team
       value=Team
       title=Team
-   />
-
-   <BarChart 
-      data={shot_profile}
-      x=metric
-      y=value
-      series=Strength
-      yMax=100
-      swapXY=true
-      type=grouped
-      downloadableData=False
-      colorPalette={[color[0].PC]}
    />
 
    <Dropdown
