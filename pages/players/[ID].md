@@ -3,19 +3,6 @@ title: Skater Stats
 hide_title: true
 ---
 
-```sql color
-SELECT DISTINCT
-   s.Team, i."Primary Color" as PC, i."Secondary Color" as SC
-FROM
-   skater s, info i
-INNER JOIN info
-   ON s.Team=i.triCode
-WHERE
-   s.ID = '${params.ID}'
-AND
-   s.Team = '${inputs.shot_team.value}'
-```
-
 ```sql bio
 SELECT DISTINCT
    Position,
@@ -94,73 +81,6 @@ AND
    Season = '${inputs.season_options.value}'
 ```
 
-```sql shot_profile
-SELECT *
-FROM(
-   SELECT
-      'Shot Rate' as metric, ("INDV-SR"*100) as value, Strength
-   FROM skater
-   WHERE
-      ID = '${params.ID}' 
-   AND
-      Season = '${inputs.shot_season.value}'
-   AND
-      Team = '${inputs.shot_team.value}'
-   UNION ALL
-   SELECT
-      'Shot Quality' as metric, ("INDV-SQ"*100) as value, Strength
-   FROM skater
-   WHERE
-      ID = '${params.ID}' 
-   AND
-      Season = '${inputs.shot_season.value}'
-   AND
-      Team = '${inputs.shot_team.value}'
-   UNION ALL
-   SELECT
-      'Finishing' as metric, ("INDV-FN"*100) as value, Strength
-   FROM skater
-   WHERE
-      ID = '${params.ID}' 
-   AND
-      Season = '${inputs.shot_season.value}'
-   AND
-      Team = '${inputs.shot_team.value}'
-   UNION ALL
-   SELECT
-      'Goal Induction' as metric, ("LiGIn-P"*100) as value, Strength
-   FROM skater
-   WHERE
-      ID = '${params.ID}' 
-   AND
-      Season = '${inputs.shot_season.value}'
-   AND
-      Team = '${inputs.shot_team.value}'
-   UNION ALL
-   SELECT
-      'Goals' as metric, ("Gi/60-P"*100) as value, Strength
-   FROM skater
-   WHERE
-      ID = '${params.ID}' 
-   AND
-      Season = '${inputs.shot_season.value}'
-   AND
-      Team = '${inputs.shot_team.value}'
-   UNION ALL
-   SELECT
-      'xGoals' as metric, ("xGi/60-P"*100) as value, Strength
-   FROM skater
-   WHERE
-      ID = '${params.ID}' 
-   AND
-      Season = '${inputs.shot_season.value}'
-   AND
-      Team = '${inputs.shot_team.value}'
-   )
-WHERE
-   Strength IN ${inputs.strength_options_2.value}
-```
-
 ```sql plays
 SELECT
    CASE
@@ -174,11 +94,6 @@ SELECT
       x_adj < 0 THEN y_adj ELSE y_adj
    END as x,
    ABS(x_adj) as y,
-   CASE
-      WHEN xG IS NULL THEN 1
-      WHEN xG <.1 THEN 0.25
-      ELSE (xG*3)
-   END as size,
    *
 FROM pbp
 WHERE
@@ -539,21 +454,6 @@ WHERE
                }
             }
          />
-      </div>
-      <div style="width:550px">
-         <DataTable data={plays} rows=10 search=true rowShading=true headerColor=#0000ff headerFontColor=white compact=true downloadable=false title="Shot Table">
-         <Column id=game_date align=center title="Date"/>
-         <Column id=game_title align=center title="Game"/>
-         <Column id=period align=center/>
-         <Column id=seconds_elapsed align=center title="Seconds"/>
-         <Column id=strength_state align=center/>
-         <Column id=event_type align=center title="Event"/>
-         <Column id=description align=center/>
-         <Column id=shot_type align=center/>
-         <Column id=away_score align=center/>
-         <Column id=home_score align=center/>
-         <Column id=xG align=center title="xG"/>
-      </DataTable>
       </div>
    </div>
    <br>
