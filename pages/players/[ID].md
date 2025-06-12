@@ -55,77 +55,185 @@ AND
 
 ```sql game_titles
 SELECT DISTINCT
-   game_id,game_date,game_title
-FROM pbp
+   id,"date",game_title
+FROM schedule
 ```
 
 ```sql log
 SELECT
    SUBSTRING(t.game_title,1,9) as game_title,
-   t.game_date,
+   t.date as game_date,
    info.teamLogo,
    (A1+A2) as "A",
 	*
 FROM game_log
 LEFT JOIN ${game_titles} as t
-   ON game_log.Game=t.game_id
+   ON game_log.Game=t.id
 LEFT JOIN info
    ON game_log.Team=info.triCode AND game_log.Season=info.seasonId
 WHERE
-   ID = '${params.ID}'
-AND
-   Strength = '${inputs.strength_options.value}'
-AND
-   Span IN ${inputs.span_options.value}
-AND
-   Season = '${inputs.season_options.value}'
-```
-
-```sql plays
-SELECT
-   CASE
-      WHEN event_type IN ('missed-shot','shot-on-goal','goal') THEN "description" || ' - xG: ' || SUBSTRING(("xG"*100),1,5) || '%'
-      ELSE "description"
-   END as "description",
-   CASE 
-      WHEN strength_state NOT IN ('5v5','5v4','4v5') THEN 'Other' ELSE strength_state
-   END as strength_state,
-   CASE WHEN
-      x_adj < 0 THEN y_adj ELSE y_adj
-   END as x,
-   ABS(x_adj) as y,
-   *
-FROM pbp
-WHERE
-   skater_id = '${params.ID}'
-AND
-   season = '${inputs.shot_season.value}'
-AND
-   event_type IN ${inputs.event_options.value}
-AND
-   team = '${inputs.shot_team.value}'
-AND
-   strength_state IN ${inputs.strength_options_2.value}
-AND
-   season_type = '${inputs.span_options_2.value}'
-ORDER BY
-   game_date asc, event_num asc
+   game_log.ID = '${params.ID}'
+   AND Strength = '${inputs.strength_options.value}'
+   AND Span IN ${inputs.span_options.value}
+   AND Season = '${inputs.season_options.value}'
 ```
 
 ```sql shot_types   
-SELECT 
-   shot_type as "name",
-   COUNT(event_type) as "value"
-FROM ${plays} 
-GROUP BY
-   shot_type
+SELECT name, sum(value) as value
+FROM (
+      (
+         SELECT 
+            'wrist' as name,
+            WristFi as value,
+         FROM skater
+         WHERE
+            ID = '${params.ID}'
+            AND Season = '${inputs.shot_season.value}'
+            AND Team = '${inputs.shot_team.value}'
+            AND Strength IN ${inputs.strength_options_2.value}
+            AND Span = '${inputs.span_options_2.value}'
+      )
+      UNION ALL
+      (
+         SELECT 
+            'deflected' as name,
+            DeflectedFi as value,
+         FROM skater
+         WHERE
+            ID = '${params.ID}'
+            AND Season = '${inputs.shot_season.value}'
+            AND Team = '${inputs.shot_team.value}'
+            AND Strength IN ${inputs.strength_options_2.value}
+            AND Span = '${inputs.span_options_2.value}'
+      )
+      UNION ALL
+      (
+         SELECT 
+            'tip-in' as name,
+            "Tip-inFi" as value,
+         FROM skater
+         WHERE
+            ID = '${params.ID}'
+            AND Season = '${inputs.shot_season.value}'
+            AND Team = '${inputs.shot_team.value}'
+            AND Strength IN ${inputs.strength_options_2.value}
+            AND Span = '${inputs.span_options_2.value}'
+      )
+      UNION ALL
+      (
+         SELECT 
+            'slap' as name,
+            SlapFi as value,
+         FROM skater
+         WHERE
+            ID = '${params.ID}'
+            AND Season = '${inputs.shot_season.value}'
+            AND Team = '${inputs.shot_team.value}'
+            AND Strength IN ${inputs.strength_options_2.value}
+            AND Span = '${inputs.span_options_2.value}'
+      )
+      UNION ALL
+      (
+         SELECT 
+            'backhand' as name,
+            BackhandFi as value,
+         FROM skater
+         WHERE
+            ID = '${params.ID}'
+            AND Season = '${inputs.shot_season.value}'
+            AND Team = '${inputs.shot_team.value}'
+            AND Strength IN ${inputs.strength_options_2.value}
+            AND Span = '${inputs.span_options_2.value}'
+      )
+      UNION ALL
+      (
+         SELECT 
+            'snap' as name,
+            SnapFi as value,
+         FROM skater
+         WHERE
+            ID = '${params.ID}'
+            AND Season = '${inputs.shot_season.value}'
+            AND Team = '${inputs.shot_team.value}'
+            AND Strength IN ${inputs.strength_options_2.value}
+            AND Span = '${inputs.span_options_2.value}'
+      )
+      UNION ALL
+      (
+         SELECT 
+            'wrap-around' as name,
+            "Wrap-AroundFi" as value,
+         FROM skater
+         WHERE
+            ID = '${params.ID}'
+            AND Season = '${inputs.shot_season.value}'
+            AND Team = '${inputs.shot_team.value}'
+            AND Strength IN ${inputs.strength_options_2.value}
+            AND Span = '${inputs.span_options_2.value}'
+      )
+      UNION ALL
+      (
+         SELECT 
+            'poke' as name,
+            PokeFi as value,
+         FROM skater
+         WHERE
+            ID = '${params.ID}'
+            AND Season = '${inputs.shot_season.value}'
+            AND Team = '${inputs.shot_team.value}'
+            AND Strength IN ${inputs.strength_options_2.value}
+            AND Span = '${inputs.span_options_2.value}'
+      )
+      UNION ALL
+      (
+         SELECT 
+            'bat' as name,
+            BatFi as value,
+         FROM skater
+         WHERE
+            ID = '${params.ID}'
+            AND Season = '${inputs.shot_season.value}'
+            AND Team = '${inputs.shot_team.value}'
+            AND Strength IN ${inputs.strength_options_2.value}
+            AND Span = '${inputs.span_options_2.value}'
+      )
+      UNION ALL
+      (
+         SELECT 
+            'cradle' as name,
+            CradleFi as value,
+         FROM skater
+         WHERE
+            ID = '${params.ID}'
+            AND Season = '${inputs.shot_season.value}'
+            AND Team = '${inputs.shot_team.value}'
+            AND Strength IN ${inputs.strength_options_2.value}
+            AND Span = '${inputs.span_options_2.value}'
+      )
+      UNION ALL
+      (
+         SELECT 
+            'between-legs' as name,
+            "Between-legsFi" as value,
+         FROM skater
+         WHERE
+            ID = '${params.ID}'
+            AND Season = '${inputs.shot_season.value}'
+            AND Team = '${inputs.shot_team.value}'
+            AND Strength IN ${inputs.strength_options_2.value}
+            AND Span = '${inputs.span_options_2.value}'
+      )
+   )
+WHERE
+   value > 0
+GROUP BY "name"
 ```
 
 ```sql event_string
 SELECT
     STRING_AGG(event_type, ',') as string
 FROM
-    (SELECT DISTINCT event_type FROM pbp WHERE event_type IN ${inputs.event_options.value})
+    (SELECT DISTINCT event_type FROM events WHERE event_type IN ${inputs.event_options.value})
 ```
 
 ```sql strength_string
@@ -135,7 +243,7 @@ FROM
    (SELECT DISTINCT
       CASE WHEN
          strength_state IN ('5v5','5v4','4v5') THEN strength_state ELSE 'Other' END as strength_state
-   FROM pbp 
+   FROM strengths
    )
 WHERE 
    strength_state IN ${inputs.strength_options_2.value}
