@@ -84,6 +84,7 @@
 	</div>
 
 	<div class="navbar">
+		<a href="https://wsba.substack.com" target="_blank">Articles</a>
 		<a href="/games/game_metrics/">Games</a>
 		<div class="dropdown">
 			<button class="dropbtn">Stats

@@ -53,12 +53,6 @@ AND
    Span IN ${inputs.span_options.value}
 ```
 
-```sql game_titles
-SELECT DISTINCT
-   id,"date",game_title
-FROM schedule
-```
-
 ```sql log
 SELECT
    SUBSTRING(t.game_title,1,9) as game_title,
@@ -67,7 +61,7 @@ SELECT
    (A1+A2) as "A",
 	*
 FROM game_log
-LEFT JOIN ${game_titles} as t
+LEFT JOIN schedule as t
    ON game_log.Game=t.id
 LEFT JOIN info
    ON game_log.Team=info.triCode AND game_log.Season=info.seasonId
@@ -75,7 +69,7 @@ WHERE
    game_log.ID = '${params.ID}'
    AND Strength = '${inputs.strength_options.value}'
    AND Span IN ${inputs.span_options.value}
-   AND Season = '${inputs.season_options.value}'
+   AND game_log.Season = '${inputs.season_options.value}'
 ```
 
 ```sql shot_types   

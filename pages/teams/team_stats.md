@@ -3,20 +3,22 @@ title: Team Stats
 hide_title: true
 ---
 
-```sql teams
-SELECT 
-    REPLACE(Team,'PHX','ARI') as Code,
-	*
+```sql seasons
+SELECT DISTINCT
+	Season
 FROM team
-WHERE 
-    Season IS NOT NULL
-AND
-    Strength IS NOT NULL
+```
+
+```sql strengths
+SELECT DISTINCT
+	Strength
+FROM team
 ```
 
 ```sql team_stats
-SELECT *
-FROM ${teams} as t
+SELECT
+	*
+FROM (SELECT REPLACE(Team,'PHX','ARI') as Code,* FROM team) as t
 RIGHT JOIN info
    ON info.triCode=t.Code AND info.seasonId=t.Season
 WHERE
@@ -32,7 +34,7 @@ AND
 		<b><h1 style="font-size:50px">Team Stats</h1></b>
 	</div>
     <Dropdown
-        data={teams}
+        data={seasons}
         name=season_options
         value=Season
         title=Season
@@ -46,7 +48,7 @@ AND
     </Dropdown>
 
     <Dropdown
-        data={teams}
+        data={strengths}
         name=strength_options
         value=Strength
         title=Strength

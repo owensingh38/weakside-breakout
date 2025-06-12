@@ -3,8 +3,26 @@ title: Skater Stats
 hide_title: true
 ---
 
-```sql skaters
-SELECT
+```sql seasons
+SELECT DISTINCT
+	Season
+FROM skater
+```
+
+```sql positions
+SELECT DISTINCT
+	Position
+FROM skater
+```
+
+```sql strengths
+SELECT DISTINCT
+	Strength
+FROM skater
+```
+
+```sql skater_stats
+SELECT 
 	(A1+A2) as "A",
 	((A1+A2)/TOI)*60 as "A/60",
 	'/players/' || ID as playerLink,
@@ -14,28 +32,12 @@ FROM skater
 RIGHT JOIN info
    ON info.triCode=skater.Team AND info.seasonId=skater.Season
 WHERE
-	Season IS NOT NULL
-AND
-	Strength IS NOT NULL
-AND
-	Position IS NOT NULL
-```
-
-```sql skater_stats
-SELECT *
-FROM ${skaters}
-WHERE
 	SUBSTRING(Season,1,8) IN ${inputs.season_options.value}
-AND
-	Span = ${inputs.span_options.value}
-AND
-	Age >= ${inputs.age_options}
-AND
-	TOI >= ${inputs.toi_options}
-AND
-	Strength = '${inputs.strength_options.value}'
-AND
-	Position IN ${inputs.position_options.value}
+	AND Span = ${inputs.span_options.value}
+	AND Age >= ${inputs.age_options}
+	AND TOI >= ${inputs.toi_options}
+	AND Strength = '${inputs.strength_options.value}'
+	AND Position IN ${inputs.position_options.value}
 ```
 
 <div style="margin: 10px;">
@@ -43,7 +45,7 @@ AND
 		<b><h1 style="font-size:50px">Skater Stats</h1></b>
 	</div>
 	<Dropdown
-		data={skaters}
+		data={seasons}
 		name=season_options
 		value=season
 		title=Season
@@ -57,7 +59,7 @@ AND
 	</Dropdown>
 
 	<Dropdown
-		data={skaters}
+		data={strengths}
 		name=strength_options
 		value=Strength
 		title=Strength
@@ -65,7 +67,7 @@ AND
 	/>
 
 	<Dropdown
-		data={skaters}
+		data={positions}
 		name=position_options
 		value=Position
 		title=Position
