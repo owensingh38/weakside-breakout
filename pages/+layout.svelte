@@ -84,7 +84,7 @@
 	</div>
 
 	<div class="navbar">
-		<a href="/games/game_metrics">Games</a>
+		<a href="/games/game_metrics/">Games</a>
 		<div class="dropdown">
 			<button class="dropbtn">Stats
 			<i class="fa fa-caret-down"></i>
