@@ -5,10 +5,9 @@ hide_title: true
 
 <style>
     .image {
-        display: block; 
-        margin-left: auto; 
-        margin-right: auto; 
-        width: auto;
+        object-fit: contain;
+        object-position: center;
+        width: 100%;
     }
 </style>
 

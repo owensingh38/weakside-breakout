@@ -43,7 +43,7 @@ SELECT
       WHEN Span = 2 THEN 'Regular' ELSE 'Playoffs'
    END as SpanText,
    info.teamLogo,
-   *
+   p.*
 FROM ${player} as p
 RIGHT JOIN info
    ON info.triCode=p.Team AND info.seasonId=p.Season
@@ -54,22 +54,29 @@ AND
 ```
 
 ```sql log
-SELECT
-   SUBSTRING(t.game_title,1,9) as game_title,
-   t.date as game_date,
-   info.teamLogo,
-   (A1+A2) as "A",
-	*
-FROM game_log
-LEFT JOIN schedule as t
-   ON game_log.Game=t.id
+SELECT info.teamLogo as oppLogo, pre_log.*
+FROM (SELECT
+         SUBSTRING(t.game_title,1,9) as game_title,
+         t.date as game_date,
+         info.teamLogo,
+         (A1+A2) as "A",
+         CASE WHEN
+            t.home_team_abbr=game_log.Team THEN away_team_abbr ELSE home_team_abbr
+         END as Opp,
+         game_log.*
+      FROM game_log
+      LEFT JOIN schedule as t
+         ON game_log.Game=t.id
+      LEFT JOIN info
+         ON game_log.Team=info.triCode AND game_log.Season=info.seasonId
+      WHERE
+         game_log.ID = '${params.ID}'
+         AND Strength = '${inputs.strength_options.value}'
+         AND Span IN ${inputs.span_options.value}
+         AND game_log.Season = '${inputs.season_options.value}'
+   ) as pre_log
 LEFT JOIN info
-   ON game_log.Team=info.triCode AND game_log.Season=info.seasonId
-WHERE
-   game_log.ID = '${params.ID}'
-   AND Strength = '${inputs.strength_options.value}'
-   AND Span IN ${inputs.span_options.value}
-   AND game_log.Season = '${inputs.season_options.value}'
+   ON pre_log.Opp=info.triCode AND pre_log.Season=info.seasonId
 ```
 
 ```sql shot_types   
@@ -455,6 +462,8 @@ WHERE
       <Column id=game_date title='Date'/>
       <Column id=teamLogo title='Logo' contentType='image' height=20px/>
       <Column id=Team/>
+      <Column id=oppLogo title='Opp.Logo' contentType='image' height=20px/>
+      <Column id=Opp title='Opponent'/>
       <Column id=TOI title='TOI'/>
       <Column id=Gi align=center title="G"/>
       <Column id=A1 align=center />
@@ -476,6 +485,8 @@ WHERE
       <Column id=game_date title='Date'/>
       <Column id=teamLogo title='Logo' contentType='image' height=20px/>
       <Column id=Team/>
+      <Column id=oppLogo title='Opp.Logo' contentType='image' height=20px/>
+      <Column id=Opp title='Opponent'/>
       <Column id=TOI title='TOI'/>
       <Column id=GF align=center title="GF"/>
       <Column id=GA align=center title="GA"/>
@@ -510,7 +521,7 @@ WHERE
    />
 
    <Dropdown
-      data={player}
+      data={player.where(`Season = '${inputs.shot_season.value}'`)}
       name=shot_team
       value=Team
       title=Team
