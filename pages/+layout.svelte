@@ -85,7 +85,15 @@
 
 	<div class="navbar">
 		<a href="https://wsba.substack.com" target="_blank">Articles</a>
-		<a href="/games/game_metrics/">Games</a>
+		<div class="dropdown">
+			<button class="dropbtn">Games
+			<i class="fa fa-caret-down"></i>
+			</button>
+			<div class="dropdown-content">
+				<a href="/games/schedule">Schedule</a>
+				<a href="/games/game_metrics">PBP Viewer</a>
+			</div>
+		</div>
 		<div class="dropdown">
 			<button class="dropbtn">Stats
 			<i class="fa fa-caret-down"></i>
@@ -100,8 +108,11 @@
 			<i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
+				<a href="/about/about">About</a>
 				<a href="/about/resources">Links</a>
 				<a href="/about/xg_model">xG Model</a>
+				<a href="/about/goal_impact">Goal Impact</a>
+				<a href="/about/glossary">Glossary</a>
 			</div>
 		</div>
 	</div>
